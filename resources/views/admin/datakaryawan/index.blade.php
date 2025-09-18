@@ -1,15 +1,11 @@
 @extends('layouts.app')
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="dashboard-header mb-4">
-                         <div class="modal-footer border-top-0">
-                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-2">
-                            <i class="bi bi-save me-1"></i>Simpan
-                        </button>
-                    </div>            <h3 class="mb-0 fw-bold">Data Karyawan</h3>
+                    <h3 class="mb-0 fw-bold">Data Karyawan</h3>
                     <p class="text-muted mb-0">Kelola informasi karyawan perusahaan</p>
                 </div>
 
@@ -19,7 +15,7 @@
                     'columns' => ['Id', 'No.', 'Nama', 'Status Karyawan', 'Keahlian', 'Jabatan', 'Aksi']
                 ])
                     @slot('actions')
-                        <!-- Dropdown button untuk device kecil dibawah 768 pixel -->
+                        <!-- Dropdown button for small devices (< 768px) -->
                         <div class="d-block d-md-none">
                             <button class="btn btn-primary rounded-pill dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,7 +33,7 @@
                             </ul>
                         </div>
 
-                        <!-- Action buttons untuk device medium ke atas -->
+                        <!-- Action buttons for medium devices and up -->
                         <div class="d-none d-md-flex gap-2">
                             <x-dt-button
                                 href="{{ route('datakaryawan.exportExcel') }}"
@@ -71,7 +67,7 @@
         </div>
     </div>
 
-    {{-- start modal section --}}
+    {{-- ================= MODAL SECTION ================= --}}
 
     {{-- start modal create --}}
     <div class="modal fade" id="createDataKaryawan" tabindex="-1" aria-labelledby="createDataKaryawanModalLabel"
@@ -85,10 +81,11 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pt-0">
+                        {{-- This section was previously closed with </x-form-section> which caused the error --}}
                         <div class="form-section mb-3">
                             <h6 class="text-primary fw-semibold mb-3">Data Karyawan</h6>
                             <div class="form-group mb-3">
-                                <label for="nama" class="form-label small fw-medium">Nama Lengkap</label>
+                                <label for="namaCreate" class="form-label small fw-medium">Nama Lengkap</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
                                     <input class="form-control border-start-0 @error('nama') is-invalid @enderror"
@@ -101,16 +98,16 @@
                                     </div>
                                 @enderror
                             </div>
-                        <div class="form-group mt-1">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <input class="form-control @error('alamat') is-invalid @enderror" type="text" name="alamat"
-                                id="alamatCreate" value="{{ old('alamat') }}" placeholder="Masukkan alamat karyawan">
-                            @error('alamat')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
+                            <div class="form-group mt-1">
+                                <label for="alamatCreate" class="form-label">Alamat</label>
+                                <input class="form-control @error('alamat') is-invalid @enderror" type="text" name="alamat"
+                                    id="alamatCreate" value="{{ old('alamat') }}" placeholder="Masukkan alamat karyawan">
+                                @error('alamat')
+                                    <div class="text-danger">
+                                        <small>{{ $message }}</small>
+                                    </div>
+                                @enderror
+                            </div>
                             <x-form-input
                                 label="Nomor Telepon"
                                 name="nomorTelepon"
@@ -120,7 +117,6 @@
                                 :errors="$errors"
                                 required
                             />
-
                             <x-form-select
                                 label="Status Karyawan"
                                 name="statusKaryawan"
@@ -138,7 +134,6 @@
                                 :errors="$errors"
                                 required
                             />
-
                             <x-form-input
                                 label="Jabatan"
                                 name="jabatan"
@@ -147,7 +142,7 @@
                                 :errors="$errors"
                                 required
                             />
-                        </x-form-section>
+                        </div>
 
                         <x-form-section title="Data Akun" icon="person-check" color="secondary">
                             <x-form-input
@@ -158,7 +153,6 @@
                                 :errors="$errors"
                                 required
                             />
-
                             <x-form-input
                                 label="Email"
                                 name="email"
@@ -168,7 +162,6 @@
                                 :errors="$errors"
                                 required
                             />
-
                             <x-form-input
                                 label="Password"
                                 name="password"
@@ -178,7 +171,6 @@
                                 :errors="$errors"
                                 required
                             />
-
                             <x-form-input
                                 label="Konfirmasi Password"
                                 name="password_confirmation"
@@ -188,7 +180,6 @@
                                 :errors="$errors"
                                 required
                             />
-
                             <x-form-select
                                 label="Role Pengguna"
                                 name="role"
@@ -199,6 +190,7 @@
                                 required
                             />
                         </x-form-section>
+
                         <div class="alert alert-info d-flex align-items-start mb-0">
                             <i class="bi bi-info-circle me-2 mt-1 flex-shrink-0"></i>
                             <small><strong>Catatan:</strong> Pastikan username karyawan yang dimasukkan merupakan username yang unik
@@ -221,148 +213,115 @@
     {{-- start modal edit --}}
     <div class="modal fade" id="editDataKaryawan" tabindex="-1" aria-labelledby="editDataKaryawanModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
                 <form action="{{ route('datakaryawan.update', ':id') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="editDataKaryawanModalLabel">Edit Data Karyawan</h4>
+                    <div class="modal-header border-bottom-0">
+                        <h5 class="modal-title fw-bold" id="editDataKaryawanModalLabel">Edit Data Karyawan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <h5 class="text-center">Data Utama</h5>
-                        <div class="form-group">
-                            <input class="form-control" type="hidden" name="idEdit" id="idEdit" value="">
-                        </div>
-                        <div class="form-group">
+                        <input class="form-control" type="hidden" name="idEdit" id="idEdit" value="">
+                        <div class="form-group mb-2">
                             <label for="namaEdit" class="form-label">Nama</label>
-                            <input class="form-control @error('namaEdit') is-invalid
-@enderror" type="text"
+                            <input class="form-control @error('namaEdit') is-invalid @enderror" type="text"
                                 name="namaEdit" id="namaEdit" value="{{ old('namaEdit') }}"
                                 placeholder="Masukkan nama karyawan">
                             @error('namaEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label for="alamatEdit" class="form-label">Alamat</label>
-                            <input class="form-control @error('alamatEdit') is-invalid
-@enderror" type="text"
+                            <input class="form-control @error('alamatEdit') is-invalid @enderror" type="text"
                                 name="alamatEdit" id="alamatEdit" value="{{ old('alamatEdit') }}"
                                 placeholder="Masukkan alamat karyawan">
                             @error('alamatEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label for="nomorTeleponEdit" class="form-label">Nomor Telepon</label>
                             <input class="form-control @error('nomorTeleponEdit') is-invalid @enderror" type="tel"
                                 name="nomorTeleponEdit" id="nomorTeleponEdit" value="{{ old('nomorTeleponEdit') }}"
                                 placeholder="Masukkan nomor telepon karyawan">
                             @error('nomorTeleponEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group my-2">
+                        <div class="form-group mb-2">
                             <label for="statusKaryawanEdit" class="form-label">Status Karyawan</label>
-                            <select class="d-block" name="statusKaryawanEdit" id="statusKaryawanEdit">
+                            <select class="form-select" name="statusKaryawanEdit" id="statusKaryawanEdit">
                                 <option value="Karyawan Tetap">Karyawan Tetap</option>
                                 <option value="Karyawan Kontrak">Karyawan Kontrak</option>
                             </select>
                             @error('statusKaryawanEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label for="keahlianEdit" class="form-label">Keahlian</label>
                             <input class="form-control @error('keahlianEdit') is-invalid @enderror" type="text"
                                 name="keahlianEdit" id="keahlianEdit" value="{{ old('keahlianEdit') }}"
                                 placeholder="Masukkan keahlian yang dimiliki karyawan">
                             @error('keahlianEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="jabatanEdit" class="form-label">Jabatan</label>
                             <input class="form-control @error('jabatanEdit') is-invalid @enderror" type="text"
                                 name="jabatanEdit" id="jabatanEdit" value="{{ old('jabatanEdit') }}"
                                 placeholder="Masukkan jabatan">
                             @error('jabatanEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <h5 class="text-center mt-3">Data Akun</h5>
-                        <div class="form-group">
+                        <hr>
+                        <h6 class="text-secondary fw-semibold mb-3">Data Akun</h6>
+                        <div class="form-group mb-2">
                             <label for="usernameEdit" class="form-label">Username</label>
-                            <input class="form-control @error('usernameEdit') is-invalid @enderror" type="text"
-                                name="usernameEdit" id="usernameEdit" value="{{ old('usernameEdit') }}" placeholder="Masukkan username"
-                                disabled>
-                            @error('usernameEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
+                            <input class="form-control" type="text" name="usernameEdit" id="usernameEdit" value="{{ old('usernameEdit') }}" placeholder="Masukkan username" disabled>
+                            <small class="text-muted">Username tidak dapat diubah.</small>
                         </div>
-                        <div class="form-group mt-1">
+                        <div class="form-group mb-2">
                             <label for="emailEdit" class="form-label">Email</label>
                             <input class="form-control @error('emailEdit') is-invalid @enderror" type="text"
                                 name="emailEdit" id="emailEdit" value="{{ old('emailEdit') }}" placeholder="Masukkan email">
                             @error('emailEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label for="passwordEdit" class="form-label">Password Baru</label>
                             <input class="form-control @error('passwordEdit') is-invalid @enderror" type="password"
-                                name="passwordEdit" id="passwordEdit" value=""
-                                placeholder="Masukkan password baru (bisa dikosongkan)" autocomplete>
+                                name="passwordEdit" id="passwordEdit"
+                                placeholder="Kosongkan jika tidak ingin diubah" autocomplete>
                             @error('passwordEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label for="passwordEdit_confirmation" class="form-label">Konfirmasi Password Baru</label>
-                            <input class="form-control @error('passwordEdit_confirmation') is-invalid @enderror"
-                                type="password" name="passwordEdit_confirmation" id="passwordEdit_confirmation"
-                                value="" placeholder="Masukkan ulang password baru" autocomplete>
-                            @error('passwordEdit_confirmation')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
+                            <input class="form-control" type="password" name="passwordEdit_confirmation" id="passwordEdit_confirmation"
+                                placeholder="Masukkan ulang password baru" autocomplete>
                         </div>
                         <div class="form-group my-2">
                             <label for="roleEdit" class="form-label">Role</label>
-                            <select class="d-block" name="roleEdit" id="roleEdit">
+                            <select class="form-select" name="roleEdit" id="roleEdit">
                                 <option value="Administrator">Administrator</option>
                                 <option value="Employee">Karyawan</option>
                             </select>
                             @error('roleEdit')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
+                                <div class="text-danger small mt-1">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan Data</button>
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-2">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
@@ -373,48 +332,50 @@
     {{-- start modal detail / show --}}
     <div class="modal fade" id="showDataKaryawan" tabindex="-1" aria-labelledby="showDataKaryawanModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="showDataKaryawanModalLabel">Detail Data Karyawan</h4>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title fw-bold" id="showDataKaryawanModalLabel">Detail Data Karyawan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input class="form-control" type="text" name="nama" id="nama" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <input class="form-control" type="text" name="alamat" id="alamat" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="nomorTelepon" class="form-label">Nomor Telepon</label>
-                        <input class="form-control" type="tel" name="nomorTelepon" id="nomorTelepon" disabled>
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="statusKaryawan" class="form-label">Status Karyawan</label>
-                        <select name="statusKaryawan" id="statusKaryawan" disabled>
-                            <option value="Karyawan Tetap">Karyawan Tetap</option>
-                            <option value="Karyawan Kontrak">Karyawan Kontrak</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="keahlian" class="form-label">Keahlian</label>
-                        <input class="form-control" type="text" name="keahlian" id="keahlian" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="jabatan" class="form-label">Jabatan</label>
-                        <input class="form-control" type="text" name="jabatan" id="jabatan" disabled>
-                    </div>
+                    <table class="table table-borderless">
+                        <tr>
+                            <td class="text-muted" style="width: 150px;">Nama</td>
+                            <td class="fw-medium" id="namaShow"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Alamat</td>
+                            <td class="fw-medium" id="alamatShow"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Nomor Telepon</td>
+                            <td class="fw-medium" id="nomorTeleponShow"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Status</td>
+                            <td class="fw-medium" id="statusKaryawanShow"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Keahlian</td>
+                            <td class="fw-medium" id="keahlianShow"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Jabatan</td>
+                            <td class="fw-medium" id="jabatanShow"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
     {{-- end modal detail / show --}}
 
-    {{-- end modal section --}}
 @endsection
+
 @push('scripts')
     <script type="module">
         $(document).ready(function() {
@@ -437,7 +398,8 @@
                         data: "DT_RowIndex",
                         name: "DT_RowIndex",
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        className: 'text-center'
                     },
                     {
                         data: "nama",
@@ -445,7 +407,8 @@
                     },
                     {
                         data: "status_karyawan",
-                        name: "status_karyawan"
+                        name: "status_karyawan",
+                        className: 'text-center'
                     },
                     {
                         data: "keahlian",
@@ -461,7 +424,8 @@
                         data: "aksi",
                         name: "aksi",
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        className: 'text-center'
                     },
                 ],
                 order: [
@@ -476,85 +440,84 @@
                 }
             });
 
-            // Membuka modal secara langsung jika ada error pada input di modal create dan edit
+            // Show modal automatically if there are validation errors
             @if (!empty(Session::get('error_in_modal')) && Session::get('error_in_modal') == 1)
                 $('#createDataKaryawan').modal('show');
             @elseif (!empty(Session::get('error_in_modal')) && Session::get('error_in_modal') == 2)
                 $('#editDataKaryawan').modal('show');
             @endif
 
-            // Menangani event ketika modal ditutup
+            // Clear validation errors when a modal is closed
             $('#editDataKaryawan, #createDataKaryawan').on('hidden.bs.modal', function() {
                 $(this).find('.text-danger').remove();
                 $(this).find('.form-control').removeClass('is-invalid');
+                $(this).find('form')[0].reset();
             });
 
-            // Edit form with bootstrap modal with data
+            // Handle edit button click to populate and show edit modal
             $('#dataKaryawanTable').on('click', '.btn-edit', function(event) {
                 event.preventDefault();
                 var $tr = $(this).closest('tr');
                 if ($tr.hasClass('child')) {
                     $tr = $tr.prev('.parent');
                 }
-
                 var data = table.row($tr).data();
 
-                // Mempopulasikan data / mengisi data dari query data ajax pada datatable
-                $('#editDataKaryawan input[name="idEdit"]').val(data.id_data_karyawan);
-                $('#editDataKaryawan input[name="namaEdit"]').val(data.nama);
-                $('#editDataKaryawan input[name="alamatEdit"]').val(data.alamat);
-                $('#editDataKaryawan input[name="nomorTeleponEdit"]').val(data.nomor_telepon);
-                $('#editDataKaryawan select[name="statusKaryawanEdit"]').val(data.status_karyawan);
-                $('#editDataKaryawan input[name="keahlianEdit"]').val(data.keahlian);
-                $('#editDataKaryawan input[name="jabatanEdit"]').val(data.jabatan);
-                $('#editDataKaryawan input[name="usernameEdit"]').val(data.user.username);
-                $('#editDataKaryawan input[name="emailEdit"]').val(data.user.email);
-                $('#editDataKaryawan select[name="roleEdit"]').val(data.user.role);
+                // Populate form fields with data from the table
+                $('#editDataKaryawan #idEdit').val(data.id_data_karyawan);
+                $('#editDataKaryawan #namaEdit').val(data.nama);
+                $('#editDataKaryawan #alamatEdit').val(data.alamat);
+                $('#editDataKaryawan #nomorTeleponEdit').val(data.nomor_telepon);
+                $('#editDataKaryawan #statusKaryawanEdit').val(data.status_karyawan);
+                $('#editDataKaryawan #keahlianEdit').val(data.keahlian);
+                $('#editDataKaryawan #jabatanEdit').val(data.jabatan);
+                $('#editDataKaryawan #usernameEdit').val(data.user.username);
+                $('#editDataKaryawan #emailEdit').val(data.user.email);
+                $('#editDataKaryawan #roleEdit').val(data.user.role);
 
-
-
-                var updateRoute = "{{ route('datakaryawan.update', ':id') }}";
-                updateRoute.replace(':id', data.id_data_karyawan);
-
-                // Set form action URL dynamically
-                var actionUrl = '/datakaryawan/' + data.id_data_karyawan;
+                // Dynamically set the form action URL
+                var actionUrl = "{{ url('admin/datakaryawan') }}/" + data.id_data_karyawan;
                 $('#editDataKaryawan form').attr('action', actionUrl);
 
+                // Show the modal
+                $('#editDataKaryawan').modal('show');
             });
 
-            // show form with bootstrap modal
+            // Handle show button click to populate and show detail modal
             $('#dataKaryawanTable').on('click', '.btn-show', function(event) {
                 event.preventDefault();
                 var $tr = $(this).closest('tr');
                 if ($tr.hasClass('child')) {
                     $tr = $tr.prev('.parent');
                 }
-
                 var data = table.row($tr).data();
 
-                // Populate your show modal with data
-                $('#showDataKaryawan input[name="nama"]').val(data.nama);
-                $('#showDataKaryawan input[name="alamat"]').val(data.alamat);
-                $('#showDataKaryawan input[name="nomorTelepon"]').val(data.nomor_telepon);
-                $('#showDataKaryawan select[name="statusKaryawan"]').val(data.status_karyawan);
-                $('#showDataKaryawan input[name="keahlian"]').val(data.keahlian);
-                $('#showDataKaryawan input[name="jabatan"]').val(data.jabatan);
+                // Populate detail view with data
+                $('#showDataKaryawan #namaShow').text(data.nama);
+                $('#showDataKaryawan #alamatShow').text(data.alamat);
+                $('#showDataKaryawan #nomorTeleponShow').text(data.nomor_telepon);
+                $('#showDataKaryawan #statusKaryawanShow').text(data.status_karyawan);
+                $('#showDataKaryawan #keahlianShow').text(data.keahlian);
+                $('#showDataKaryawan #jabatanShow').text(data.jabatan);
+
+                // Show the modal
+                $('#showDataKaryawan').modal('show');
             });
 
-            // delete confirmation with sweetalert by realrashid
+            // Handle delete button click with SweetAlert confirmation
             $(".datatable").on("click", ".btn-delete", function(e) {
                 e.preventDefault();
                 var form = $(this).closest("form");
                 var nama = $(this).data("nama");
 
                 Swal.fire({
-                    title: "Apakah anda yakin ingin menghapus data \n" + nama + "?",
+                    title: "Apakah anda yakin ingin menghapus data <br><strong>" + nama + "</strong>?",
                     text: "Anda tidak bisa mengembalikan data setelah terhapus!",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "bg-primary",
                     confirmButtonText: "Ya, hapus!",
-                    cancelButtonText: "Tidak, jangan hapus!"
+                    cancelButtonText: "Tidak, batalkan."
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
