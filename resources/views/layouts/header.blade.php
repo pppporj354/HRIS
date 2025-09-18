@@ -24,7 +24,7 @@
                 <span
                     class="position-absolute top-0 start-0 translate-middle p-1 bg-danger border border-light rounded-circle penanda-notifikasi d-none">
                 </span>
-                <a href="#" class="d-block text-decoration-none dropdown-toggle" id="dropdownUser1"
+                <a href="#" class="d-block text-decoration-none" id="dropdownUser1"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="avatar">
                         <img src="{{ Vite::asset('resources/assets/avatar.svg') }}" alt="User Avatar" width="24"
