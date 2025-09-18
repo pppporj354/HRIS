@@ -1,0 +1,9 @@
+body {
+    background-color: whitesmoke;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    right: 0;
+    left: auto;
+}
