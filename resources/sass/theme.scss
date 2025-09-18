@@ -1002,3 +1002,715 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control::before {
         padding: 1.25rem;
     }
 }
+
+// Quick Action Cards
+.quick-action-card {
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px rgba(2, 6, 23, 0.06);
+    transition: all 0.3s ease;
+    height: 100%;
+    cursor: pointer;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(2, 6, 23, 0.12);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, $brand-primary, $brand-secondary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        &:hover::before {
+            opacity: 1;
+        }
+    }
+}
+
+.quick-action-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+
+    i {
+        font-size: 1.5rem;
+    }
+
+    &.bg-warning {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+    }
+
+    &.bg-success {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    &.bg-primary {
+        background: linear-gradient(135deg, $brand-primary, #5b21b6);
+    }
+
+    &.bg-info {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+}
+
+.quick-action-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.quick-action-count {
+    margin: 0.75rem 0;
+
+    .badge {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+    }
+}
+
+// Status Cards
+.status-card {
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(2, 6, 23, 0.06);
+    transition: all 0.2s ease;
+    height: 100%;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(2, 6, 23, 0.08);
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .card-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.25rem;
+    }
+
+    .h5, .h6 {
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+    }
+
+    &.border-success .h5,
+    &.border-success .h6 {
+        color: #10b981;
+    }
+
+    &.border-warning .h5,
+    &.border-warning .h6 {
+        color: #f59e0b;
+    }
+
+    &.border-info .h5,
+    &.border-info .h6 {
+        color: #3b82f6;
+    }
+}
+
+// Export dropdown styling
+.dropdown-menu {
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 0.5rem;
+    min-width: 220px;
+
+    .dropdown-item {
+        border-radius: 8px;
+        padding: 0.75rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &:hover {
+            background-color: rgba(108, 92, 231, 0.08);
+            color: #111827;
+            transform: translateX(4px);
+        }
+
+        i {
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+    }
+}
+
+// Chart containers
+.dashboard-charts {
+    .dashboard-card {
+        position: relative;
+
+        .card-body {
+            padding: 1rem;
+
+            canvas {
+                max-height: 300px;
+            }
+        }
+
+        h6.card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    }
+}
+
+// Employee Dashboard Widgets
+.employee-widget-card {
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(2, 6, 23, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    height: 100%;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+}
+
+.widget-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.widget-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+
+    &.bg-primary {
+        background: linear-gradient(135deg, $brand-primary, #5b21b6);
+        box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+    }
+
+    &.bg-success {
+        background: linear-gradient(135deg, #10b981, #059669);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    &.bg-warning {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+}
+
+.widget-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.25rem;
+}
+
+// Leave Balance Progress
+.leave-progress {
+    .progress {
+        height: 8px;
+        border-radius: 50px;
+        background-color: rgba(108, 92, 231, 0.1);
+        overflow: hidden;
+
+        .progress-bar {
+            background: linear-gradient(to right, $brand-primary, $brand-secondary);
+            border-radius: 50px;
+            transition: width 0.3s ease;
+        }
+    }
+}
+
+.leave-stats {
+    .leave-stat {
+        .stat-number {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+        }
+    }
+}
+
+// Attendance Circle Progress
+.attendance-circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.circle-progress {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        #10b981 0deg,
+        #10b981 var(--percentage, 0deg),
+        rgba(16, 185, 129, 0.1) var(--percentage, 0deg),
+        rgba(16, 185, 129, 0.1) 360deg
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        background: #fff;
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .circle-text {
+        z-index: 2;
+        text-align: center;
+
+        .percentage {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+            line-height: 1;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+    }
+}
+
+.comparison-stats {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+// Payroll Info
+.payroll-info {
+    .salary-amount {
+        color: #10b981;
+        font-weight: 700;
+    }
+
+    .countdown-timer {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $brand-primary;
+    }
+}
+
+// Employee Activity Card
+.employee-activity-card {
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(2, 6, 23, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+
+    .card-header {
+        background: transparent;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        h6 {
+            margin-bottom: 0;
+            font-weight: 600;
+            color: #111827;
+        }
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+}
+
+// Activity Timeline
+.activity-timeline {
+    .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+        &:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+
+    .timeline-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+        flex-shrink: 0;
+
+        &.bg-success {
+            background: #10b981;
+        }
+
+        &.bg-warning {
+            background: #f59e0b;
+        }
+
+        &.bg-danger {
+            background: #ef4444;
+        }
+
+        &.bg-info {
+            background: #3b82f6;
+        }
+
+        &.bg-primary {
+            background: $brand-primary;
+        }
+    }
+
+    .timeline-content {
+        flex: 1;
+    }
+
+    .timeline-title {
+        font-weight: 600;
+        color: #111827;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .timeline-description {
+        color: #6b7280;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-time {
+        color: #9ca3af;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+}
+
+// Responsive adjustments for employee dashboard
+@media (max-width: 768px) {
+    .employee-widget-card {
+        margin-bottom: 1rem;
+    }
+
+    .widget-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+
+    .attendance-circle {
+        width: 100px;
+        height: 100px;
+
+        &::before {
+            width: 80px;
+            height: 80px;
+        }
+
+        .circle-text .percentage {
+            font-size: 1.25rem;
+        }
+    }
+
+    .activity-timeline .timeline-item {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+}
+
+// Enhanced Notification System Styles
+.notification-dropdown {
+    min-width: 360px;
+    max-width: 420px;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    padding: 0;
+    margin-top: 8px;
+    
+    .dropdown-header {
+        background: linear-gradient(135deg, var(--bs-primary), var(--bs-info));
+        color: white;
+        padding: 1rem 1.25rem;
+        border-radius: 16px 16px 0 0;
+        border-bottom: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        .header-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .mark-all-read-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                background: rgba(255,255,255,0.3);
+                border-color: rgba(255,255,255,0.4);
+                color: white;
+            }
+        }
+    }
+    
+    .notification-list {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 0;
+        
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: #f8f9fa;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 10px;
+        }
+        
+        &::-webkit-scrollbar-thumb:hover {
+            background: #adb5bd;
+        }
+    }
+    
+    .notification-item {
+        transition: all 0.2s ease;
+        
+        &.unread {
+            background-color: rgba(var(--bs-primary-rgb), 0.02);
+            border-left: 3px solid var(--bs-primary);
+        }
+        
+        &:hover {
+            background-color: rgba(var(--bs-primary-rgb), 0.05);
+        }
+        
+        .notification-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #dee2e6;
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+            
+            &.active {
+                background-color: var(--bs-primary);
+                box-shadow: 0 0 0 2px rgba(var(--bs-primary-rgb), 0.2);
+            }
+        }
+        
+        .notification-content {
+            flex: 1;
+            
+            .notification-message {
+                font-size: 0.875rem;
+                line-height: 1.4;
+                color: var(--bs-gray-800);
+                margin: 0 0 0.25rem 0;
+            }
+            
+            .notification-time {
+                font-size: 0.75rem;
+                color: var(--bs-gray-500);
+            }
+        }
+        
+        .mark-read-btn {
+            opacity: 0.7;
+            transition: all 0.2s ease;
+            color: var(--bs-gray-600);
+            
+            &:hover {
+                opacity: 1;
+                color: var(--bs-primary);
+                transform: scale(1.1);
+            }
+        }
+    }
+    
+    .dropdown-footer {
+        background-color: #f8f9fa;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0 0 16px 16px;
+        border-top: 1px solid #e3e6f0;
+        
+        .view-all-btn {
+            color: var(--bs-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                color: var(--bs-primary);
+                text-decoration: none;
+                transform: translateX(2px);
+            }
+        }
+    }
+}
+
+// Notification Bell Icon Animation
+.notification-bell {
+    position: relative;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        transform: rotate(15deg);
+        color: var(--bs-primary);
+    }
+    
+    .badge-notifikasi {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.65rem;
+        font-weight: 600;
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
+        color: white;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        animation: pulse 2s infinite;
+        
+        .notification-count {
+            line-height: 1;
+        }
+    }
+    
+    .penanda-notifikasi {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 10px;
+        height: 10px;
+        background: #e74c3c;
+        border-radius: 50%;
+        border: 2px solid white;
+        animation: pulse 2s infinite;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+// Toast Notification Styles (for success/error messages)
+.alert {
+    &.position-fixed {
+        animation: slideInRight 0.3s ease-out;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

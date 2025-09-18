@@ -107,9 +107,33 @@ Route::middleware(['auth', 'no.cache'])->group(function () {
     Route::get('panduan', [AllController::class, 'panduan'])->name('panduan');
     // route untuk menampilkan dashboard dan juga get data untuk halaman dashboard yaitu absensi hari ini
     Route::get('dashboard', [AllController::class, 'dashboard'])->name('dashboard');
+    
+    // Dashboard API routes for charts and analytics
+    Route::prefix('api/dashboard')->group(function () {
+        Route::get('attendance-trends', [AllController::class, 'getAttendanceTrends'])->name('api.dashboard.attendance-trends');
+        Route::get('salary-distribution', [AllController::class, 'getSalaryDistribution'])->name('api.dashboard.salary-distribution');
+        Route::get('department-stats', [AllController::class, 'getDepartmentStats'])->name('api.dashboard.department-stats');
+        Route::get('monthly-payroll', [AllController::class, 'getMonthlyPayroll'])->name('api.dashboard.monthly-payroll');
+        Route::get('leave-statistics', [AllController::class, 'getLeaveStatistics'])->name('api.dashboard.leave-statistics');
+        Route::get('employee-performance', [AllController::class, 'getEmployeePerformance'])->name('api.dashboard.employee-performance');
+        Route::get('recent-activities', [AllController::class, 'getRecentActivitiesApi'])->name('api.dashboard.recent-activities');
+        Route::get('pending-approvals', [AllController::class, 'getPendingApprovals'])->name('api.dashboard.pending-approvals');
+        
+        // Employee personal dashboard APIs
+        Route::get('personal-attendance', [AllController::class, 'getPersonalAttendance'])->name('api.dashboard.personal-attendance');
+        Route::get('personal-leave', [AllController::class, 'getPersonalLeave'])->name('api.dashboard.personal-leave');
+    });
+    
     // route untuk notifikasi
     Route::resource('notifikasi', NotifikasiController::class);
     Route::get('/getNotifikasiCount', [NotifikasiController::class, 'count']);
+    
+    // Enhanced notification routes
+    Route::prefix('api/notifications')->group(function () {
+        Route::get('recent', [NotifikasiController::class, 'getRecentNotifications'])->name('api.notifications.recent');
+        Route::post('{id}/mark-read', [NotifikasiController::class, 'markAsRead'])->name('api.notifications.mark-read');
+        Route::post('mark-all-read', [NotifikasiController::class, 'markAllAsRead'])->name('api.notifications.mark-all-read');
+    });
 });
 
 // route untuk login agar dapat mengakses route yang ada di dalam middleware master

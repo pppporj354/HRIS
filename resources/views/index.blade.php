@@ -170,6 +170,365 @@
                         @endif
                     @endauth
 
+                    <!-- Quick Actions Section for Admin -->
+                    @auth
+                        @if (Auth::user()->hasRole('Administrator'))
+                            <div class="row mt-4">
+                                <div class="col-12 mb-3">
+                                    <h5 class="dashboard-section-title mb-0">Aksi Cepat</h5>
+                                    <p class="text-muted small mb-0">Tugas administrasi yang memerlukan perhatian</p>
+                                </div>
+
+                                <!-- Pending Leave Approvals -->
+                                <div class="col-lg-3 col-md-6 mb-4">
+                                    <div class="quick-action-card">
+                                        <div class="card-body text-center">
+                                            <div class="quick-action-icon bg-warning text-white mb-3">
+                                                <i class="bi bi-calendar-check"></i>
+                                            </div>
+                                            <h6 class="quick-action-title">Persetujuan Cuti</h6>
+                                            <div class="quick-action-count mb-2">
+                                                @if(isset($adminAnalytics['pendingApprovals']['leave_requests']))
+                                                    <span class="badge bg-warning fs-6">{{ $adminAnalytics['pendingApprovals']['leave_requests'] }}</span>
+                                                @else
+                                                    <span class="badge bg-warning fs-6" id="pendingLeaveCount">0</span>
+                                                @endif
+                                            </div>
+                                            <p class="text-muted small mb-3">Pengajuan menunggu persetujuan</p>
+                                            <a href="{{ route('persetujuancuti.index') }}" class="btn btn-outline-warning btn-sm">
+                                                <i class="bi bi-eye me-1"></i> Lihat Detail
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payroll Processing -->
+                                <div class="col-lg-3 col-md-6 mb-4">
+                                    <div class="quick-action-card">
+                                        <div class="card-body text-center">
+                                            <div class="quick-action-icon bg-success text-white mb-3">
+                                                <i class="bi bi-wallet2"></i>
+                                            </div>
+                                            <h6 class="quick-action-title">Penggajian</h6>
+                                            <div class="quick-action-count mb-2">
+                                                @if(isset($adminAnalytics['pendingApprovals']['payroll_pending']))
+                                                    <span class="badge bg-success fs-6">{{ $adminAnalytics['pendingApprovals']['payroll_pending'] }}</span>
+                                                @else
+                                                    <span class="badge bg-success fs-6" id="pendingPayrollCount">0</span>
+                                                @endif
+                                            </div>
+                                            <p class="text-muted small mb-3">Gaji belum dibayarkan</p>
+                                            <a href="{{ route('penggajian.index') }}" class="btn btn-outline-success btn-sm">
+                                                <i class="bi bi-currency-dollar me-1"></i> Kelola Gaji
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Employee Management -->
+                                <div class="col-lg-3 col-md-6 mb-4">
+                                    <div class="quick-action-card">
+                                        <div class="card-body text-center">
+                                            <div class="quick-action-icon bg-primary text-white mb-3">
+                                                <i class="bi bi-people"></i>
+                                            </div>
+                                            <h6 class="quick-action-title">Kelola Karyawan</h6>
+                                            <div class="quick-action-count mb-2">
+                                                <span class="badge bg-primary fs-6">{{ $totaldatakaryawan }}</span>
+                                            </div>
+                                            <p class="text-muted small mb-3">Total karyawan aktif</p>
+                                            <a href="{{ route('datakaryawan.index') }}" class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-person-plus me-1"></i> Kelola Data
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Reports & Analytics -->
+                                <div class="col-lg-3 col-md-6 mb-4">
+                                    <div class="quick-action-card">
+                                        <div class="card-body text-center">
+                                            <div class="quick-action-icon bg-info text-white mb-3">
+                                                <i class="bi bi-graph-up"></i>
+                                            </div>
+                                            <h6 class="quick-action-title">Laporan</h6>
+                                            <div class="quick-action-count mb-2">
+                                                <span class="badge bg-info fs-6"><i class="bi bi-file-earmark-text"></i></span>
+                                            </div>
+                                            <p class="text-muted small mb-3">Analisis & laporan</p>
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="bi bi-download me-1"></i> Export
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#" onclick="exportReport('attendance')">
+                                                        <i class="bi bi-calendar-date me-2"></i> Laporan Absensi
+                                                    </a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="exportReport('payroll')">
+                                                        <i class="bi bi-wallet2 me-2"></i> Laporan Penggajian
+                                                    </a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="exportReport('employees')">
+                                                        <i class="bi bi-people me-2"></i> Data Karyawan
+                                                    </a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="exportReport('leave')">
+                                                        <i class="bi bi-calendar-x me-2"></i> Laporan Cuti
+                                                    </a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- System Status Cards -->
+                            <div class="row mt-2">
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="status-card border-start border-4 border-success">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="card-title mb-1">Tingkat Kehadiran</h6>
+                                                    <p class="text-muted small mb-0">Rata-rata bulan ini</p>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="h5 mb-0 text-success" id="avgAttendanceRate">--%</div>
+                                                    <small class="text-muted">dari target 95%</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="status-card border-start border-4 border-warning">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="card-title mb-1">Pengajuan Cuti</h6>
+                                                    <p class="text-muted small mb-0">Bulan ini</p>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="h5 mb-0 text-warning" id="monthlyLeaveRequests">--</div>
+                                                    <small class="text-muted">pengajuan</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="status-card border-start border-4 border-info">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="card-title mb-1">Pengeluaran Gaji</h6>
+                                                    <p class="text-muted small mb-0">Bulan ini</p>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="h6 mb-0 text-info" id="monthlyPayrollAmount">Rp --</div>
+                                                    <small class="text-muted">total dibayar</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
+
+                    <!-- Employee Personal Dashboard -->
+                    @auth
+                        @if (Auth::user()->hasRole('Employee'))
+                            <div class="row mt-4">
+                                <div class="col-12 mb-3">
+                                    <h5 class="dashboard-section-title mb-0">Dashboard Personal</h5>
+                                    <p class="text-muted small mb-0">Informasi personal dan aktivitas Anda</p>
+                                </div>
+
+                                <!-- Leave Balance Card -->
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="employee-widget-card">
+                                        <div class="card-body">
+                                            <div class="widget-header">
+                                                <div class="widget-icon bg-primary">
+                                                    <i class="bi bi-calendar-heart"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="widget-title">Saldo Cuti</h6>
+                                                    <p class="text-muted small mb-0">Tahun {{ date('Y') }}</p>
+                                                </div>
+                                            </div>
+                                            
+                                            @if(isset($employeeAnalytics['leaveBalance']))
+                                                @php
+                                                    $leaveBalance = $employeeAnalytics['leaveBalance'];
+                                                    $annualLeave = 12; // Standard annual leave days
+                                                    $usedLeave = $leaveBalance['approved'];
+                                                    $remainingLeave = $annualLeave - $usedLeave;
+                                                @endphp
+                                                
+                                                <div class="leave-progress mt-3">
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <span class="small text-muted">Tersisa</span>
+                                                        <span class="small font-weight-bold">{{ $remainingLeave }}/{{ $annualLeave }} hari</span>
+                                                    </div>
+                                                    <div class="progress" style="height: 8px;">
+                                                        <div class="progress-bar bg-primary" role="progressbar" 
+                                                             style="width: {{ ($remainingLeave / $annualLeave) * 100 }}%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="leave-stats mt-3">
+                                                    <div class="row text-center">
+                                                        <div class="col-4">
+                                                            <div class="leave-stat">
+                                                                <div class="stat-number text-success">{{ $leaveBalance['approved'] }}</div>
+                                                                <div class="stat-label">Disetujui</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="leave-stat">
+                                                                <div class="stat-number text-warning">{{ $leaveBalance['pending'] }}</div>
+                                                                <div class="stat-label">Pending</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="leave-stat">
+                                                                <div class="stat-number text-danger">{{ $leaveBalance['rejected'] }}</div>
+                                                                <div class="stat-label">Ditolak</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="text-center py-3">
+                                                    <div class="h4 text-primary">12</div>
+                                                    <p class="text-muted small mb-0">Hari cuti tersedia</p>
+                                                </div>
+                                            @endif
+
+                                            <div class="mt-3">
+                                                <a href="{{ route('cuti.create') }}" class="btn btn-primary btn-sm w-100">
+                                                    <i class="bi bi-plus-circle me-1"></i> Ajukan Cuti Baru
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Attendance Summary Card -->
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="employee-widget-card">
+                                        <div class="card-body">
+                                            <div class="widget-header">
+                                                <div class="widget-icon bg-success">
+                                                    <i class="bi bi-clock-history"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="widget-title">Kehadiran Bulan Ini</h6>
+                                                    <p class="text-muted small mb-0">{{ date('F Y') }}</p>
+                                                </div>
+                                            </div>
+
+                                            @if(isset($employeeAnalytics['performanceComparison']))
+                                                @php
+                                                    $myRate = $employeeAnalytics['performanceComparison']['my_attendance_rate'];
+                                                    $avgRate = $employeeAnalytics['performanceComparison']['company_avg_attendance'];
+                                                @endphp
+                                                
+                                                <div class="attendance-summary mt-3">
+                                                    <div class="text-center mb-3">
+                                                        <div class="attendance-circle">
+                                                            <div class="circle-progress" data-percentage="{{ $myRate }}">
+                                                                <div class="circle-text">
+                                                                    <span class="percentage">{{ round($myRate) }}%</span>
+                                                                    <span class="label">Kehadiran</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="comparison-stats">
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <span class="text-muted small">Saya</span>
+                                                            <span class="small font-weight-bold text-{{ $myRate >= 90 ? 'success' : ($myRate >= 80 ? 'warning' : 'danger') }}">
+                                                                {{ round($myRate) }}%
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span class="text-muted small">Rata-rata perusahaan</span>
+                                                            <span class="small">{{ round($avgRate) }}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="text-center py-3">
+                                                    <div class="h4 text-success">{{ $absensimasukperkaryawan }}</div>
+                                                    <p class="text-muted small mb-0">Hari hadir</p>
+                                                </div>
+                                            @endif
+
+                                            <div class="mt-3">
+                                                <a href="{{ route('absensi.index') }}" class="btn btn-success btn-sm w-100">
+                                                    <i class="bi bi-eye me-1"></i> Lihat Riwayat
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Next Payroll Card -->
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="employee-widget-card">
+                                        <div class="card-body">
+                                            <div class="widget-header">
+                                                <div class="widget-icon bg-warning">
+                                                    <i class="bi bi-wallet2"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="widget-title">Informasi Gaji</h6>
+                                                    <p class="text-muted small mb-0">Pembayaran terakhir</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="payroll-info mt-3">
+                                                <div class="last-salary text-center mb-3">
+                                                    <div class="salary-amount h5 text-success mb-1">
+                                                        Rp {{ number_format($gajiperkaryawan, 0, ',', '.') }}
+                                                    </div>
+                                                    <p class="text-muted small mb-0">Gaji terbaru diterima</p>
+                                                </div>
+
+                                                @if(isset($employeeAnalytics['upcomingEvents']['next_payroll']))
+                                                    <div class="next-payroll-info">
+                                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                                            <span class="text-muted small">Pembayaran berikutnya</span>
+                                                            <span class="badge bg-info">{{ $employeeAnalytics['upcomingEvents']['next_payroll'] }}</span>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
+                                                <div class="payroll-countdown">
+                                                    <div class="text-center">
+                                                        <div id="payrollCountdown" class="countdown-timer"></div>
+                                                        <p class="text-muted small mb-0">hingga gaji berikutnya</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-3">
+                                                <a href="{{ route('riwayatgaji.index') }}" class="btn btn-warning btn-sm w-100">
+                                                    <i class="bi bi-clock-history me-1"></i> Riwayat Gaji
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
+
                     <!-- Activity Feed Section -->
                     @auth
                         <div class="row mt-4">
@@ -317,6 +676,111 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Charts Section -->
+                        @if (Auth::user()->hasRole('Administrator'))
+                            <div class="row mt-4 dashboard-charts">
+                                <div class="col-12 mb-3">
+                                    <h5 class="dashboard-section-title mb-0">Analitik Dashboard</h5>
+                                    <p class="text-muted small mb-0">Grafik dan visualisasi data karyawan</p>
+                                </div>
+                                
+                                <!-- First row of charts -->
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <div style="height: 300px;">
+                                                <canvas id="attendanceTrendsChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <div style="height: 300px;">
+                                                <canvas id="salaryDistributionChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Second row of charts -->
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <div style="height: 300px;">
+                                                <canvas id="departmentStatsChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <div style="height: 300px;">
+                                                <canvas id="monthlyPayrollChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Third row of charts -->
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <div style="height: 300px;">
+                                                <canvas id="leaveStatisticsChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <div style="height: 300px;">
+                                                <canvas id="employeePerformanceChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (Auth::user()->hasRole('Employee'))
+                            <div class="row mt-4 dashboard-charts">
+                                <div class="col-12 mb-3">
+                                    <h5 class="dashboard-section-title mb-0">Analitik Personal</h5>
+                                    <p class="text-muted small mb-0">Grafik data pribadi Anda</p>
+                                </div>
+                                
+                                <!-- Employee personal charts -->
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Riwayat Kehadiran</h6>
+                                            <div style="height: 250px;">
+                                                <canvas id="personalAttendanceChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 mb-4">
+                                    <div class="dashboard-card">
+                                        <div class="card-body">
+                                            <h6 class="card-title">Status Cuti</h6>
+                                            <div style="height: 250px;">
+                                                <canvas id="personalLeaveChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     @endauth
                 </div>
             </div>

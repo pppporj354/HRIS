@@ -9,6 +9,36 @@ window.Popper = Popper;
 import "datatables.net-bs5";
 import "datatables.net-buttons-bs5";
 
+// import Chart.js
+import {
+    Chart,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    LineElement,
+    PointElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+// Register Chart.js components
+Chart.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    LineElement,
+    PointElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+// Make Chart available globally
+window.Chart = Chart;
+
 // make sure folder assets inside resource can be accessed through vite
 import.meta.glob(["../assets/**"]);
 
@@ -94,6 +124,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.classList.remove("touching");
                 }, 150);
             });
+        });
+    }
+
+    // Initialize dashboard charts if on dashboard page
+    if (document.querySelector('.dashboard-charts')) {
+        import('./dashboard-charts.js').catch(error => {
+            console.error('Error loading dashboard charts:', error);
+        });
+    }
+
+    // Initialize quick actions if on dashboard page
+    if (document.querySelector('.quick-action-card')) {
+        import('./quick-actions.js').catch(error => {
+            console.error('Error loading quick actions:', error);
+        });
+    }
+
+    // Initialize employee dashboard if on dashboard page
+    if (document.querySelector('.employee-widget-card')) {
+        import('./employee-dashboard.js').catch(error => {
+            console.error('Error loading employee dashboard:', error);
         });
     }
 });
