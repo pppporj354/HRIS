@@ -197,7 +197,7 @@
                                                     ->orderBy('created_at', 'desc')
                                                     ->limit(2)
                                                     ->get();
-                                                    
+
                                                 foreach ($latestCuti as $cuti) {
                                                     $activities[] = [
                                                         'icon' => 'bi-calendar-plus',
