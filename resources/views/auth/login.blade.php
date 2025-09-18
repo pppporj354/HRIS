@@ -1,67 +1,50 @@
-<!DOCTYPE html>
-<html class="h-100 w-100" lang="en">
+@extends('layouts.auth')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HRIS IGI</title>
-    <link rel="shortcut icon" href="{{ asset('igi_logo.png') }}" type="image/x-icon">
-    @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/js/app.js'])
-</head>
+@section('title', 'Masuk - HRIS IGI')
 
-<body class=" w-100 h-100">
-    <main class="h-100 w-100">
-        <div class="container h-100">
-            <div class="row h-100 justify-content-center align-items-center">
-                <div class="col-lg-5">
-                    <div class="card shadow-lg border-0 rounded-lg">
-                        <div class="card-header">
-                            <h3 class="text-center font-weight-light my-4">Human Resource Information System PT.
-                                Indo Global Impex</h3>
-                        </div>
-                        <div class="card-body">
-                            @error('login')
-                                <div class="alert alert-danger" role="alert">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-                                <div class="form-floating mb-3">
-
-                                    <input class="form-control @error('login') is-invalid @enderror" id="login"
-                                        name="login" type="text" placeholder="Email or Username" required
-                                        autocomplete="login"
-                                        @if (isset($_COOKIE['login'])) value="{{ $_COOKIE['login'] }}" @else value="{{ old('login') }}" @endif>
-                                    <label for="login">Email address or Username</label>
-                                </div>
-                                {{-- password div --}}
-                                <div class="form-floating mb-3">
-                                    <input class="form-control @error('login') is-invalid @enderror" id="password"
-                                        type="password" name="password" placeholder="Password"
-                                        autocomplete="current-password" value="{{ old('password') }}" required />
-                                    <label for="password">Password</label>
-                                </div>
-                                {{-- end password div --}}
-                                <div class="form-check mb-3">
-                                    <input class="form-check-input" id="inputRememberPassword" type="checkbox"
-                                        name="rememberme" value="on" checked />
-                                    <label class="form-check-label" for="inputRememberPassword">Remember
-                                        Me</label>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                    <a class="small" href="{{ route('password.request') }}">Forgot Password?</a>
-                                    <button type="submit" class="btn btn-primary">Login</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+@section('content')
+    <div class="card-header text-center">
+        <div class="d-flex justify-content-center mb-3">
+            <span class="brand-badge"><i class="bi bi-lock-fill"></i></span>
         </div>
-    </main>
-
-</body>
-
-</html>
+        <h3 class="fw-semibold mb-1">Selamat datang kembali</h3>
+        <p class="text-muted mb-0">Masuk untuk melanjutkan ke dashboard</p>
+    </div>
+    <div class="card-body p-3 p-md-4">
+        @error('login')
+            <div class="alert alert-danger" role="alert">
+                {{ $message }}
+            </div>
+        @enderror
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="form-floating mb-3">
+                <input class="form-control @error('login') is-invalid @enderror" id="login"
+                    name="login" type="text" placeholder="Email or Username" required
+                    autocomplete="login"
+                    @if (isset($_COOKIE['login'])) value="{{ $_COOKIE['login'] }}" @else value="{{ old('login') }}" @endif>
+                <label for="login">Email address or Username</label>
+            </div>
+            <div class="form-floating mb-2">
+                <input class="form-control @error('login') is-invalid @enderror" id="password"
+                    type="password" name="password" placeholder="Password"
+                    autocomplete="current-password" value="{{ old('password') }}" required />
+                <label for="password">Password</label>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" id="inputRememberPassword" type="checkbox"
+                        name="rememberme" value="on" checked />
+                    <label class="form-check-label" for="inputRememberPassword">Remember Me</label>
+                </div>
+                <a class="small link-muted" href="{{ route('password.request') }}">Forgot Password?</a>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Login</button>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer bg-transparent text-center py-3">
+        <small class="text-muted">PT. Indo Global Impex • HRIS IGI</small>
+    </div>
+@endsection

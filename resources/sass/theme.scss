@@ -1,0 +1,219 @@
+// Design tokens inspired by modern HRIS dashboard aesthetics
+$brand-primary: #6c5ce7; // indigo accent
+$brand-secondary: #00d1b2; // teal accent
+$brand-dark: #0f172a; // slate-900
+$brand: linear-gradient(
+    135deg,
+    rgba(108, 92, 231, 1) 0%,
+    rgba(0, 209, 178, 1) 100%
+);
+$muted-bg: #0b1220; // deep background
+$muted-2: #111827; // slate-800
+$muted-3: #1f2937; // slate-700
+$text-on-dark: #e5e7eb; // gray-200
+$text-muted: #9ca3af; // gray-400
+
+// Auth page layout
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+    background: $brand,
+        radial-gradient(
+            80% 120% at 100% 0%,
+            rgba(255, 255, 255, 0.04),
+            transparent 60%
+        );
+}
+
+.auth-illustration {
+    display: none;
+    position: relative;
+    background: linear-gradient(
+            180deg,
+            rgba(15, 23, 42, 0.8),
+            rgba(15, 23, 42, 0.9)
+        ),
+        url("/igi_logo.png") center/120px no-repeat;
+    color: $text-on-dark;
+}
+
+@media (min-width: 992px) {
+    .auth-illustration {
+        display: flex;
+        flex: 1;
+        align-items: end;
+        padding: 3rem;
+    }
+}
+
+.auth-illustration .copy {
+    max-width: 520px;
+}
+
+.auth-illustration h1 {
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.auth-illustration p {
+    color: $text-muted;
+}
+
+.auth-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+}
+
+.auth-card .card-header {
+    background: transparent;
+    border-bottom: none;
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+}
+
+.brand-badge {
+    height: 44px;
+    width: 44px;
+    border-radius: 12px;
+    background: $brand;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 6px 16px rgba(108, 92, 231, 0.25);
+}
+
+.form-floating > label {
+    color: #6b7280;
+}
+.form-control:focus {
+    border-color: rgba(108, 92, 231, 0.5);
+    box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.15);
+}
+
+.btn-primary {
+    background: $brand;
+    border: none;
+}
+.btn-primary:hover {
+    filter: brightness(0.98);
+}
+
+.link-muted {
+    color: #6b7280;
+}
+.link-muted:hover {
+    color: #374151;
+}
+
+// Minor header/sidenav prep (will expand later)
+.navbar-dark.bg-dark {
+    background: linear-gradient(180deg, #0b1220 0%, #0e1627 100%) !important;
+}
+
+.sidebar {
+    border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+// Topbar tweaks
+.topbar.navbar {
+    backdrop-filter: saturate(180%) blur(8px);
+    box-shadow: 0 6px 20px rgba(2, 6, 23, 0.15);
+}
+.topbar .navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+.topbar .dropdown-menu {
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.15);
+}
+
+// Sidebar navigation
+.sidebar {
+    background: #ffffff !important;
+}
+.sidebar .sidebar-heading {
+    color: #6b7280;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #374151;
+    border-radius: 10px;
+    margin: 2px 8px;
+    padding: 0.5rem 0.75rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.sidebar .nav-link i {
+    color: #6b7280;
+}
+.sidebar .nav-link:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+.sidebar .nav-link.active {
+    background: rgba(108, 92, 231, 0.12);
+    color: #111827;
+    font-weight: 600;
+}
+.sidebar .nav-link.active i {
+    color: #6c5ce7;
+}
+
+// Dashboard stat cards
+.stat-card {
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+    overflow: hidden;
+}
+.stat-card .stat-accent {
+    position: absolute;
+    inset: 0 auto auto 0;
+    height: 100%;
+    width: 6px;
+    background: $brand;
+}
+.stat-card .icon-wrap {
+    height: 48px;
+    width: 48px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: $brand;
+    box-shadow: 0 8px 18px rgba(108, 92, 231, 0.25);
+}
+.stat-card .label {
+    color: #6b7280;
+    font-weight: 500;
+}
+.stat-card .value {
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: #111827;
+}
+
+// Badges tweaks
+.badge-notifikasi {
+    margin-left: 0.25rem;
+}

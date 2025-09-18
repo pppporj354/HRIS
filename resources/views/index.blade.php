@@ -1,20 +1,9 @@
 @extends('layouts.app')
 @section('css')
     <style>
-        .card-icon {
-            font-size: 2rem;
-            color: #ffffff;
-        }
-
-        .card {
-            margin-bottom: 1rem;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        .card-icon { font-size: 1.25rem; color: #fff; }
+        .stat-card .card-body { padding: 1.25rem 1.25rem; }
+        .stat-card .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .25rem; }
     </style>
 @endsection
 @section('content')
@@ -33,35 +22,38 @@
                         @if (Auth::user()->hasRole('Administrator'))
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="card bg-primary text-white">
+                                    <div class="stat-card">
+                                        <span class="stat-accent"></span>
                                         <div class="card-body">
-                                            <div class="card-header">
-                                                <div>Pengajuan Cuti</div>
-                                                <i class="bi bi-file-earmark-text card-icon"></i>
+                                            <div class="header">
+                                                <span class="label">Pengajuan Cuti</span>
+                                                <span class="icon-wrap"><i class="bi bi-file-earmark-text card-icon"></i></span>
                                             </div>
-                                            <h3>{{ $totalcuti }}</h3>
+                                            <div class="value">{{ $totalcuti }}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card bg-success text-white">
+                                    <div class="stat-card">
+                                        <span class="stat-accent"></span>
                                         <div class="card-body">
-                                            <div class="card-header">
-                                                <div>Total Gaji Dibayarkan</div>
-                                                <i class="bi bi-cash-coin card-icon"></i>
+                                            <div class="header">
+                                                <span class="label">Total Gaji Dibayarkan</span>
+                                                <span class="icon-wrap"><i class="bi bi-cash-coin card-icon"></i></span>
                                             </div>
-                                            <h3>{{ $jumlahgajiterbayar }}</h3>
+                                            <div class="value">{{ $jumlahgajiterbayar }}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card bg-warning text-white">
+                                    <div class="stat-card">
+                                        <span class="stat-accent"></span>
                                         <div class="card-body">
-                                            <div class="card-header">
-                                                <div>Jumlah Karyawan</div>
-                                                <i class="bi bi-calendar-check card-icon"></i>
+                                            <div class="header">
+                                                <span class="label">Jumlah Karyawan</span>
+                                                <span class="icon-wrap"><i class="bi bi-calendar-check card-icon"></i></span>
                                             </div>
-                                            <h3>{{ $totaldatakaryawan }}</h3>
+                                            <div class="value">{{ $totaldatakaryawan }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -72,35 +64,38 @@
                         @if (Auth::user()->hasRole('Employee'))
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="card bg-primary text-white">
+                                    <div class="stat-card">
+                                        <span class="stat-accent"></span>
                                         <div class="card-body">
-                                            <div class="card-header">
-                                                <div>Jumlah Cuti yang Diajukan</div>
-                                                <i class="bi bi-file-earmark-text card-icon"></i>
+                                            <div class="header">
+                                                <span class="label">Jumlah Cuti yang Diajukan</span>
+                                                <span class="icon-wrap"><i class="bi bi-file-earmark-text card-icon"></i></span>
                                             </div>
-                                            <h3 id="pengajuanCuti">{{ $pengajuancutiperkaryawan }}</h3>
+                                            <div class="value" id="pengajuanCuti">{{ $pengajuancutiperkaryawan }}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card bg-success text-white">
+                                    <div class="stat-card">
+                                        <span class="stat-accent"></span>
                                         <div class="card-body">
-                                            <div class="card-header">
-                                                <div>Total Gaji Diterima</div>
-                                                <i class="bi bi-cash-coin card-icon"></i>
+                                            <div class="header">
+                                                <span class="label">Total Gaji Diterima</span>
+                                                <span class="icon-wrap"><i class="bi bi-cash-coin card-icon"></i></span>
                                             </div>
-                                            <h3 id="totalGaji">{{ $gajiperkaryawan }}</h3>
+                                            <div class="value" id="totalGaji">{{ $gajiperkaryawan }}</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="card bg-warning text-white">
+                                    <div class="stat-card">
+                                        <span class="stat-accent"></span>
                                         <div class="card-body">
-                                            <div class="card-header">
-                                                <div>Jumlah Kehadiran</div>
-                                                <i class="bi bi-calendar-check card-icon"></i>
+                                            <div class="header">
+                                                <span class="label">Jumlah Kehadiran</span>
+                                                <span class="icon-wrap"><i class="bi bi-calendar-check card-icon"></i></span>
                                             </div>
-                                            <h3 id="jumlahKehadiran">{{ $absensimasukperkaryawan }} Hari</h3>
+                                            <div class="value" id="jumlahKehadiran">{{ $absensimasukperkaryawan }} Hari</div>
                                         </div>
                                     </div>
                                 </div>

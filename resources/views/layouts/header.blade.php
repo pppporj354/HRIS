@@ -1,5 +1,7 @@
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ route('dashboard') }}">HRIS IGI</a>
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow topbar">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ route('dashboard') }}">
+        <i class="bi bi-grid me-2"></i> HRIS IGI
+    </a>
     <button class="navbar-toggler d-md-none collapsed position-relative" type="button" data-bs-toggle="collapse"
         data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         {{-- badge pemberitahuan notifikasi --}}
@@ -9,7 +11,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="navbar-nav">
+    <div class="navbar-nav ms-auto me-2">
         <div class="nav-item text-nowrap d-flex">
             <div class="dropdown text-end d-flex align-items-center me-3 position-relative">
                 {{-- badge pemberitahuan notifikasi --}}

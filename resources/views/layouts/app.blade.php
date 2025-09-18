@@ -10,7 +10,7 @@
     @vite('resources/js/jquery.js')
     @vite('resources/js/app.js')
     @vite('resources/js/sidebar.js')
-    @vite(['resources/sass/app.scss', 'resources/css/app.css', 'resources/css/dashboard.css'])
+    @vite(['resources/sass/app.scss','resources/sass/theme.scss','resources/css/app.css','resources/css/dashboard.css'])
     @yield('css')
     <style>
         html,

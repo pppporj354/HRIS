@@ -9,6 +9,7 @@ export default defineConfig({
                 "resources/js/jquery.js",
                 "resources/js/app.js",
                 "resources/sass/app.scss",
+                "resources/sass/theme.scss",
                 "resources/css/app.css",
                 "resources/js/sidebar.js",
                 "resources/js/app.js",
