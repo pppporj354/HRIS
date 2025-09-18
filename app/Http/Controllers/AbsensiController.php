@@ -18,7 +18,7 @@ class AbsensiController extends Controller
     {
         $user = Auth::user();
         $isAdmin = $user->role === 'Administrator';
-        
+
         if ($isAdmin) {
             // Admin view - show all attendance records
             return view('absensi.index', compact('isAdmin'));
@@ -47,7 +47,7 @@ class AbsensiController extends Controller
             if (!$dataKaryawan) {
                 return response()->json(['data' => []]);
             }
-            
+
             $query = Absensi::with('dataKaryawan')
                 ->where('data_karyawan_id', $dataKaryawan->id_data_karyawan)
                 ->select(['id_absensi', 'tanggal', 'jam_masuk', 'status_absensi', 'keterangan', 'data_karyawan_id', 'created_at']);
@@ -98,7 +98,7 @@ class AbsensiController extends Controller
     {
         $user = Auth::user();
         $isAdmin = $user->role === 'Administrator';
-        
+
         if ($isAdmin) {
             $employees = DataKaryawan::where('status_karyawan', 'Aktif')->get();
             return view('absensi.create', compact('employees', 'isAdmin'));
@@ -167,14 +167,14 @@ class AbsensiController extends Controller
     {
         $user = Auth::user();
         $isAdmin = $user->role === 'Administrator';
-        
+
         if (!$isAdmin) {
             return redirect()->route('absensi.index')->with('error', 'Anda tidak memiliki akses untuk mengedit absensi');
         }
 
         $absensi = Absensi::with('dataKaryawan')->findOrFail($id);
         $employees = DataKaryawan::where('status_karyawan', 'Aktif')->get();
-        
+
         return view('absensi.edit', compact('absensi', 'employees', 'isAdmin'));
     }
 
@@ -185,7 +185,7 @@ class AbsensiController extends Controller
     {
         $user = Auth::user();
         $isAdmin = $user->role === 'Administrator';
-        
+
         if (!$isAdmin) {
             return redirect()->route('absensi.index')->with('error', 'Anda tidak memiliki akses untuk mengedit absensi');
         }
@@ -222,7 +222,7 @@ class AbsensiController extends Controller
     {
         $user = Auth::user();
         $isAdmin = $user->role === 'Administrator';
-        
+
         if (!$isAdmin) {
             return redirect()->route('absensi.index')->with('error', 'Anda tidak memiliki akses untuk menghapus absensi');
         }

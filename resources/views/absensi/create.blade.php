@@ -37,7 +37,7 @@
 
                     <form action="{{ route('absensi.store') }}" method="POST">
                         @csrf
-                        
+
                         @if($isAdmin)
                             <div class="mb-3">
                                 <label for="data_karyawan_id" class="form-label">Karyawan <span class="text-danger">*</span></label>
