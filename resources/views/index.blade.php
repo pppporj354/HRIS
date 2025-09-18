@@ -191,21 +191,11 @@
 
                                                 // Get latest cuti requests
                                                 $latestCuti = DB::table('cuti')
-                                                    ->join('data_karyawan', 'cuti.data_karyawan_id', '=', 'data_karyawan.id_data_karyawan')
-                                                    ->join('users', 'data_karyawan.user_id', '=', 'users.id_user')
-                                                    ->select('cuti.*', 'data_karyawan.nama', 'users.username')
+                                                    ->join('users', 'cuti.user_id', '=', 'users.id')
+                                                    ->select('cuti.*', 'users.name')
                                                     ->orderBy('created_at', 'desc')
                                                     ->limit(2)
                                                     ->get();
-
-                                                foreach ($latestCuti as $cuti) {
-                                                    $activities[] = [
-                                                        'icon' => 'bi-calendar-plus',
-                                                        'title' => 'Pengajuan cuti dari ' . $cuti->nama,
-                                                        'time' => \Carbon\Carbon::parse($cuti->created_at)->diffForHumans(),
-                                                        'status' => 'primary'
-                                                    ];
-                                                }
 
                                                 foreach ($latestCuti as $cuti) {
                                                     $activities[] = [
@@ -237,9 +227,7 @@
 
                                                 // Get employee's latest leave requests
                                                 $myLatestCuti = DB::table('cuti')
-                                                    ->join('data_karyawan', 'cuti.data_karyawan_id', '=', 'data_karyawan.id_data_karyawan')
-                                                    ->where('data_karyawan.user_id', $userId)
-                                                    ->select('cuti.*')
+                                                    ->where('user_id', $userId)
                                                     ->orderBy('created_at', 'desc')
                                                     ->limit(2)
                                                     ->get();
@@ -266,16 +254,15 @@
 
                                                 // Get employee's latest attendance
                                                 $latestAttendance = DB::table('absensi')
-                                                    ->join('data_karyawan', 'absensi.data_karyawan_id', '=', 'data_karyawan.id_data_karyawan')
-                                                    ->where('data_karyawan.user_id', $userId)
-                                                    ->select('absensi.*')
+                                                    ->where('user_id', $userId)
                                                     ->orderBy('created_at', 'desc')
+                                                    ->limit(1)
                                                     ->first();
 
                                                 if ($latestAttendance) {
                                                     $activities[] = [
                                                         'icon' => 'bi-check2-square',
-                                                        'title' => 'Anda absen pada ' . $latestAttendance->tanggal,
+                                                        'title' => 'Anda absen pada ' . $latestAttendance->tanggal_absensi,
                                                         'time' => \Carbon\Carbon::parse($latestAttendance->created_at)->diffForHumans(),
                                                         'status' => 'info'
                                                     ];
