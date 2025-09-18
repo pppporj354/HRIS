@@ -199,7 +199,7 @@
                                                         ->get();                                                foreach ($latestCuti as $cuti) {
                                                     $activities[] = [
                                                         'icon' => 'bi-calendar-plus',
-                                                        'title' => 'Pengajuan cuti dari ' . $cuti->nama,
+                                                        'title' => 'Pengajuan   cuti dari ' . $cuti->nama,
                                                         'time' => \Carbon\Carbon::parse($cuti->created_at)->diffForHumans(),
                                                         'status' => 'primary'
                                                     ];

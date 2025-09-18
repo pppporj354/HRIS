@@ -1,64 +1,72 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <div class="card mt-3 mb-3">
-            <div class="card-header">Data Karyawan</div>
-            <div class="card-body d-flex justify-content-end">
-                <!-- Dropdown button untuk device kecil dibwaah 768 pixel atau size medium pada bootstrap 5 -->
-                <div class="d-block d-md-none">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Aksi
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="{{ route('datakaryawan.exportExcel') }}" id="linkExportExcel"><i
-                                    class="bi bi-download me-1"></i><span>Excel</span></a></li>
-                        <li><a class="dropdown-item" href="{{ route('datakaryawan.exportPDF') }}" id="linkExportPDF"><i
-                                    class="bi bi-download me-1"></i><span>PDF</span></a></li>
-                        <li><a class="dropdown-item" href="#" data-bs-target="#createDataKaryawan"
-                                data-bs-toggle="modal"> <i class="bi bi-plus-circle"></i><span>Tambah</span></a>
-                        </li>
-                    </ul>
+        <div class="row justify-content-center">
+            <div class="col-md-11">
+                <div class="dashboard-header mb-4">
+                         <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-2">
+                            <i class="bi bi-save me-1"></i>Simpan
+                        </button>
+                    </div>            <h3 class="mb-0 fw-bold">Data Karyawan</h3>
+                    <p class="text-muted mb-0">Kelola informasi karyawan perusahaan</p>
                 </div>
 
-                <!-- List inline untuk device dengan ukuran medium ke atas -->
-                <ul class="list-inline mb-0 d-none d-md-flex">
-                    <li class="list-inline-item">
-                        <a href="{{ route('datakaryawan.exportExcel') }}" id="linkExportExcel"
-                            class="btn btn-outline-success">
-                            <i class="bi bi-download me-1"></i><span>Excel</span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="{{ route('datakaryawan.exportPDF') }}" id="linkExportPDF" class="btn btn-outline-danger">
-                            <i class="bi bi-download me-1"></i><span>PDF</span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <button type="button" class="btn btn-primary" data-bs-target="#createDataKaryawan"
-                            data-bs-toggle="modal">
-                            <i class="bi bi-plus-circle me-1"></i><span>Tambah</span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
+                @component('components.datatable-card', [
+                    'title' => 'Data Karyawan',
+                    'id' => 'dataKaryawanTable',
+                    'columns' => ['Id', 'No.', 'Nama', 'Status Karyawan', 'Keahlian', 'Jabatan', 'Aksi']
+                ])
+                    @slot('actions')
+                        <!-- Dropdown button untuk device kecil dibawah 768 pixel -->
+                        <div class="d-block d-md-none">
+                            <button class="btn btn-primary rounded-pill dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear-fill me-1"></i>Aksi
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="{{ route('datakaryawan.exportExcel') }}" id="linkExportExcel">
+                                    <i class="bi bi-file-excel me-2 text-success"></i><span>Export Excel</span></a></li>
+                                <li><a class="dropdown-item" href="{{ route('datakaryawan.exportPDF') }}" id="linkExportPDF">
+                                    <i class="bi bi-file-pdf me-2 text-danger"></i><span>Export PDF</span></a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" data-bs-target="#createDataKaryawan" data-bs-toggle="modal">
+                                    <i class="bi bi-plus-circle me-2 text-primary"></i><span>Tambah Karyawan</span></a>
+                                </li>
+                            </ul>
+                        </div>
 
-            <div class="card-body" style="overflow-x:auto;">
-                <table class="table table-bordered table-hover table-striped mb-0 bg-white datatable"
-                    id="dataKaryawanTable">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>No.</th>
-                            <th>Nama</th>
-                            <th>Status Karyawan</th>
-                            <th>Keahlian</th>
-                            <th>Jabatan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                </table>
+                        <!-- Action buttons untuk device medium ke atas -->
+                        <div class="d-none d-md-flex gap-2">
+                            <x-dt-button
+                                href="{{ route('datakaryawan.exportExcel') }}"
+                                id="linkExportExcel"
+                                type="outline-success"
+                                icon="file-excel"
+                                label="Excel"
+                                tooltip="Export ke Excel"
+                            />
 
+                            <x-dt-button
+                                href="{{ route('datakaryawan.exportPDF') }}"
+                                id="linkExportPDF"
+                                type="outline-danger"
+                                icon="file-pdf"
+                                label="PDF"
+                                tooltip="Export ke PDF"
+                            />
+
+                            <x-dt-button
+                                modal="createDataKaryawan"
+                                type="primary"
+                                icon="plus-circle"
+                                label="Tambah"
+                                tooltip="Tambah karyawan baru"
+                            />
+                        </div>
+                    @endslot
+                @endcomponent
             </div>
         </div>
     </div>
@@ -68,26 +76,31 @@
     {{-- start modal create --}}
     <div class="modal fade" id="createDataKaryawan" tabindex="-1" aria-labelledby="createDataKaryawanModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
                 <form action="{{ route('datakaryawan.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createDataKaryawanModalLabel">Tambah Karyawan</h5>
+                    <div class="modal-header border-bottom-0 pb-0">
+                        <h5 class="modal-title fw-bold" id="createDataKaryawanModalLabel">Tambah Karyawan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <h4 class="text-center">Data Karyawan</h4>
-                        <div class="form-group">
-                            <label for="nama" class="form-label">Nama</label>
-                            <input class="form-control @error('nama') is-invalid @enderror" type="text" name="nama"
-                                id="namaCreate" value="{{ old('nama') }}" placeholder="Masukkan nama karyawan">
-                            @error('nama')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
+                    <div class="modal-body pt-0">
+                        <div class="form-section mb-3">
+                            <h6 class="text-primary fw-semibold mb-3">Data Karyawan</h6>
+                            <div class="form-group mb-3">
+                                <label for="nama" class="form-label small fw-medium">Nama Lengkap</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+                                    <input class="form-control border-start-0 @error('nama') is-invalid @enderror"
+                                           type="text" name="nama" id="namaCreate"
+                                           value="{{ old('nama') }}" placeholder="Masukkan nama lengkap">
                                 </div>
-                            @enderror
-                        </div>
+                                @error('nama')
+                                    <div class="text-danger small mt-1">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         <div class="form-group mt-1">
                             <label for="alamat" class="form-label">Alamat</label>
                             <input class="form-control @error('alamat') is-invalid @enderror" type="text" name="alamat"
@@ -413,10 +426,15 @@
 @push('scripts')
     <script type="module">
         $(document).ready(function() {
-            // show table record with datatable
+            // Initialize tooltips
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+            // Enhanced DataTable initialization
             var table = $("#dataKaryawanTable").DataTable({
                 serverSide: true,
                 processing: true,
+                responsive: true,
                 ajax: "/getDataKaryawan",
                 columns: [{
                         data: "id_data_karyawan",
