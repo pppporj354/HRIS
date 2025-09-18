@@ -81,10 +81,10 @@ class AllController extends Controller
             'attendanceTrends' => Absensi::select(
                 DB::raw('strftime("%m", tanggal) as month'),
                 DB::raw('COUNT(CASE WHEN status_absensi = "Masuk" THEN 1 END) as present'),
-                DB::raw('COUNT(CASE WHEN status_absensi = "Alpha" THEN 1 END) as absent')
+                DB::raw('COUNT(CASE WHEN status_absensi = "Tidak Masuk" THEN 1 END) as absent')
             )
-                ->whereRaw('strftime("%Y", tanggal) = ?', [$currentYear])
-                ->whereRaw('strftime("%m", tanggal) >= ?', [str_pad($currentMonth - 5, 2, '0', STR_PAD_LEFT)])
+                ->where(DB::raw('strftime("%Y", tanggal)'), $currentYear)
+                ->where(DB::raw('strftime("%m", tanggal)'), '>=', sprintf('%02d', $currentMonth - 5))
                 ->groupBy(DB::raw('strftime("%m", tanggal)'))
                 ->orderBy('month')
                 ->get(),
@@ -130,7 +130,7 @@ class AllController extends Controller
                 DB::raw('COUNT(*) as count')
             )
                 ->where('status_gaji', 'Terbayar')
-                ->whereRaw('strftime("%Y", created_at) = ?', [$currentYear])
+                ->where(DB::raw('strftime("%Y", created_at)'), $currentYear)
                 ->groupBy(DB::raw('strftime("%m", created_at)'))
                 ->orderBy('month')
                 ->get(),
@@ -161,11 +161,11 @@ class AllController extends Controller
             'attendanceHistory' => Absensi::select(
                 DB::raw('strftime("%m", tanggal) as month'),
                 DB::raw('COUNT(CASE WHEN status_absensi = "Masuk" THEN 1 END) as present'),
-                DB::raw('COUNT(CASE WHEN status_absensi = "Alpha" THEN 1 END) as absent')
+                DB::raw('COUNT(CASE WHEN status_absensi = "Tidak Masuk" THEN 1 END) as absent')
             )
                 ->where('data_karyawan_id', $datakaryawan->id_data_karyawan)
-                ->whereRaw('strftime("%Y", tanggal) = ?', [$currentYear])
-                ->whereRaw('strftime("%m", tanggal) >= ?', [str_pad($currentMonth - 5, 2, '0', STR_PAD_LEFT)])
+                ->where(DB::raw('strftime("%Y", tanggal)'), $currentYear)
+                ->where(DB::raw('strftime("%m", tanggal)'), '>=', sprintf('%02d', $currentMonth - 5))
                 ->groupBy(DB::raw('strftime("%m", tanggal)'))
                 ->orderBy('month')
                 ->get(),
@@ -185,8 +185,8 @@ class AllController extends Controller
             'salaryHistory' => Gaji::select('total_gaji', 'created_at')
                 ->where('data_karyawan_id', $datakaryawan->id_data_karyawan)
                 ->where('status_gaji', 'Terbayar')
-                ->whereRaw('strftime("%Y", created_at) = ?', [$currentYear])
-                ->whereRaw('strftime("%m", created_at) >= ?', [str_pad($currentMonth - 5, 2, '0', STR_PAD_LEFT)])
+                ->where(DB::raw('strftime("%Y", created_at)'), $currentYear)
+                ->where(DB::raw('strftime("%m", created_at)'), '>=', sprintf('%02d', $currentMonth - 5))
                 ->orderBy('created_at', 'desc')
                 ->get(),
 
@@ -391,7 +391,7 @@ class AllController extends Controller
                 'data_karyawan.jabatan',
                 DB::raw('COUNT(CASE WHEN absensi.status_absensi = "Masuk" THEN 1 END) as present_days')
             )
-            ->whereRaw('strftime("%m", absensi.tanggal) = ?', [str_pad($currentMonth, 2, '0', STR_PAD_LEFT)])
+            ->where(DB::raw('strftime("%m", absensi.tanggal)'), sprintf('%02d', $currentMonth))
             ->groupBy('data_karyawan.id_data_karyawan', 'data_karyawan.nama', 'data_karyawan.jabatan')
             ->orderBy('present_days', 'desc')
             ->limit(5)
@@ -402,7 +402,7 @@ class AllController extends Controller
     {
         $currentMonth = Carbon::now()->month;
         $attendanceData = Absensi::where('data_karyawan_id', $employeeId)
-            ->whereRaw('strftime("%m", tanggal) = ?', [str_pad($currentMonth, 2, '0', STR_PAD_LEFT)])
+            ->where(DB::raw('strftime("%m", tanggal)'), sprintf('%02d', $currentMonth))
             ->selectRaw('
                 COUNT(CASE WHEN status_absensi = "Masuk" THEN 1 END) as present,
                 COUNT(*) as total
@@ -416,7 +416,7 @@ class AllController extends Controller
     private function getCompanyAverageAttendance()
     {
         $currentMonth = Carbon::now()->month;
-        $avgData = Absensi::whereRaw('strftime("%m", tanggal) = ?', [str_pad($currentMonth, 2, '0', STR_PAD_LEFT)])
+        $avgData = Absensi::where(DB::raw('strftime("%m", tanggal)'), sprintf('%02d', $currentMonth))
             ->selectRaw('
                 COUNT(CASE WHEN status_absensi = "Masuk" THEN 1 END) as present,
                 COUNT(*) as total
@@ -474,13 +474,26 @@ class AllController extends Controller
 
         $trends = Absensi::select(
             DB::raw('strftime("%m", tanggal) as month'),
-            DB::raw('strftime("%m", tanggal) as month_name'),
+            DB::raw('CASE strftime("%m", tanggal)
+                WHEN "01" THEN "January"
+                WHEN "02" THEN "February"
+                WHEN "03" THEN "March"
+                WHEN "04" THEN "April"
+                WHEN "05" THEN "May"
+                WHEN "06" THEN "June"
+                WHEN "07" THEN "July"
+                WHEN "08" THEN "August"
+                WHEN "09" THEN "September"
+                WHEN "10" THEN "October"
+                WHEN "11" THEN "November"
+                WHEN "12" THEN "December"
+                END as month_name'),
             DB::raw('COUNT(CASE WHEN status_absensi = "Masuk" THEN 1 END) as present'),
-            DB::raw('COUNT(CASE WHEN status_absensi = "Alpha" THEN 1 END) as absent'),
+            DB::raw('COUNT(CASE WHEN status_absensi = "Tidak Masuk" THEN 1 END) as absent'),
             DB::raw('COUNT(*) as total')
         )
-            ->whereRaw('strftime("%Y", tanggal) = ?', [$currentYear])
-            ->whereRaw('strftime("%m", tanggal) >= ?', [str_pad($currentMonth - 5, 2, '0', STR_PAD_LEFT)])
+            ->where(DB::raw('strftime("%Y", tanggal)'), $currentYear)
+            ->where(DB::raw('strftime("%m", tanggal)'), '>=', sprintf('%02d', $currentMonth - 5))
             ->groupBy(DB::raw('strftime("%m", tanggal)'))
             ->orderBy('month')
             ->get();
@@ -537,13 +550,26 @@ class AllController extends Controller
 
         $payroll = Gaji::select(
             DB::raw('strftime("%m", created_at) as month'),
-            DB::raw('strftime("%m", created_at) as month_name'),
+            DB::raw('CASE strftime("%m", created_at)
+                WHEN "01" THEN "January"
+                WHEN "02" THEN "February"
+                WHEN "03" THEN "March"
+                WHEN "04" THEN "April"
+                WHEN "05" THEN "May"
+                WHEN "06" THEN "June"
+                WHEN "07" THEN "July"
+                WHEN "08" THEN "August"
+                WHEN "09" THEN "September"
+                WHEN "10" THEN "October"
+                WHEN "11" THEN "November"
+                WHEN "12" THEN "December"
+                END as month_name'),
             DB::raw('SUM(total_gaji) as total_amount'),
             DB::raw('COUNT(*) as employee_count'),
             DB::raw('AVG(total_gaji) as average_salary')
         )
             ->where('status_gaji', 'Terbayar')
-            ->whereRaw('strftime("%Y", created_at) = ?', [$currentYear])
+            ->where(DB::raw('strftime("%Y", created_at)'), $currentYear)
             ->groupBy(DB::raw('strftime("%m", created_at)'))
             ->orderBy('month')
             ->get();
@@ -565,13 +591,26 @@ class AllController extends Controller
 
             'monthly_trends' => Cuti::select(
                 DB::raw('strftime("%m", created_at) as month'),
-                DB::raw('strftime("%m", created_at) as month_name'),
+                DB::raw('CASE strftime("%m", created_at)
+                    WHEN "01" THEN "January"
+                    WHEN "02" THEN "February"
+                    WHEN "03" THEN "March"
+                    WHEN "04" THEN "April"
+                    WHEN "05" THEN "May"
+                    WHEN "06" THEN "June"
+                    WHEN "07" THEN "July"
+                    WHEN "08" THEN "August"
+                    WHEN "09" THEN "September"
+                    WHEN "10" THEN "October"
+                    WHEN "11" THEN "November"
+                    WHEN "12" THEN "December"
+                    END as month_name'),
                 DB::raw('COUNT(*) as total_requests'),
                 DB::raw('COUNT(CASE WHEN status_cuti = "Disetujui" THEN 1 END) as approved'),
                 DB::raw('COUNT(CASE WHEN status_cuti = "Pending" THEN 1 END) as pending'),
                 DB::raw('COUNT(CASE WHEN status_cuti = "Ditolak" THEN 1 END) as rejected')
             )
-                ->whereRaw('strftime("%Y", created_at) = ?', [$currentYear])
+                ->where(DB::raw('strftime("%Y", created_at)'), $currentYear)
                 ->groupBy(DB::raw('strftime("%m", created_at)'))
                 ->orderBy('month')
                 ->get(),
@@ -579,7 +618,7 @@ class AllController extends Controller
             'by_department' => DataKaryawan::select(
                 'jabatan as department',
                 DB::raw('COUNT(cuti.id_cuti) as leave_count'),
-                DB::raw('AVG(DATEDIFF(cuti.tanggal_selesai_cuti, cuti.tanggal_mulai_cuti)) as avg_duration')
+                DB::raw('AVG(julianday(cuti.tanggal_selesai_cuti) - julianday(cuti.tanggal_mulai_cuti)) as avg_duration')
             )
                 ->join('cuti', 'data_karyawan.id_data_karyawan', '=', 'cuti.data_karyawan_id')
                 ->groupBy('jabatan')
@@ -608,7 +647,7 @@ class AllController extends Controller
             ->leftJoin('absensi', 'data_karyawan.id_data_karyawan', '=', 'absensi.data_karyawan_id')
             ->leftJoin('cuti', 'data_karyawan.id_data_karyawan', '=', 'cuti.data_karyawan_id')
             ->leftJoin('gaji', 'data_karyawan.id_data_karyawan', '=', 'gaji.data_karyawan_id')
-            ->whereRaw('strftime("%m", absensi.tanggal) = ?', [str_pad($currentMonth, 2, '0', STR_PAD_LEFT)])
+            ->where(DB::raw('strftime("%m", absensi.tanggal)'), sprintf('%02d', $currentMonth))
             ->groupBy('data_karyawan.id_data_karyawan', 'data_karyawan.nama', 'data_karyawan.jabatan')
             ->orderBy('attendance_rate', 'desc')
             ->limit(10)
@@ -674,13 +713,26 @@ class AllController extends Controller
 
         $attendanceHistory = Absensi::select(
             DB::raw('strftime("%m", tanggal) as month'),
-            DB::raw('strftime("%m", tanggal) as month_name'),
+            DB::raw('CASE strftime("%m", tanggal)
+                WHEN "01" THEN "January"
+                WHEN "02" THEN "February"
+                WHEN "03" THEN "March"
+                WHEN "04" THEN "April"
+                WHEN "05" THEN "May"
+                WHEN "06" THEN "June"
+                WHEN "07" THEN "July"
+                WHEN "08" THEN "August"
+                WHEN "09" THEN "September"
+                WHEN "10" THEN "October"
+                WHEN "11" THEN "November"
+                WHEN "12" THEN "December"
+                END as month_name'),
             DB::raw('COUNT(CASE WHEN status_absensi = "Masuk" THEN 1 END) as present_days'),
             DB::raw('COUNT(*) as total_days')
         )
             ->where('data_karyawan_id', $datakaryawan->id_data_karyawan)
-            ->whereRaw('strftime("%Y", tanggal) = ?', [$currentYear])
-            ->whereRaw('strftime("%m", tanggal) >= ?', [str_pad($currentMonth - 5, 2, '0', STR_PAD_LEFT)])
+            ->where(DB::raw('strftime("%Y", tanggal)'), $currentYear)
+            ->where(DB::raw('strftime("%m", tanggal)'), '>=', sprintf('%02d', $currentMonth - 5))
             ->groupBy(DB::raw('strftime("%m", tanggal)'))
             ->orderBy('month')
             ->get();

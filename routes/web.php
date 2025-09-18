@@ -11,6 +11,7 @@ use App\Http\Controllers\EmployeeControllerThree;
 use App\Http\Controllers\EmployeeControllerTwo;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AbsensiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -102,6 +103,18 @@ Route::middleware(['auth', 'no.cache'])->group(function () {
     // route profile
      Route::get('/profil/sunting', [ProfileController::class, 'sunting'])->name('profil.sunting');
     Route::resource('profil', ProfileController::class);
+
+    // route absensi (for both admin and employee)
+    Route::resource('kelola-absensi', AbsensiController::class)->names([
+        'index' => 'absensi.index',
+        'create' => 'absensi.create',
+        'store' => 'absensi.store',
+        'show' => 'absensi.show',
+        'edit' => 'absensi.edit',
+        'update' => 'absensi.update',
+        'destroy' => 'absensi.destroy'
+    ]);
+    Route::get('getDataAbsensi', [AbsensiController::class, 'getData'])->name('absensi.getData');
 
     // route panduan penggunaan aplikasi
     Route::get('panduan', [AllController::class, 'panduan'])->name('panduan');

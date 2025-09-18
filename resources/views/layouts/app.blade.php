@@ -13,32 +13,23 @@
     @vite(['resources/sass/app.scss','resources/sass/theme.scss','resources/css/app.css','resources/css/dashboard.css'])
     @yield('css')
     <style>
-        html,
-        body {
+        html, body {
             height: 100%;
             margin: 0;
-        }
-
-        .container-fluid {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .row {
-            flex-grow: 1;
-        }
-
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            overflow-x: hidden;
         }
 
         .main-content {
             flex-grow: 1;
-            padding: 20px;
+            padding: 1.5rem;
             overflow-y: auto;
+            overflow-x: hidden;
+            height: calc(100vh - 56px); /* Adjust based on header height */
+        }
+
+        .container-fluid {
+            height: 100%;
+            overflow-x: hidden;
         }
     </style>
 </head>
@@ -48,7 +39,7 @@
     <div class="container-fluid flex-grow-1 d-flex">
         <div class="row flex-fill">
             @include('layouts.sidenav')
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-0 main-content">
                 @yield('content')
             </main>
         </div>

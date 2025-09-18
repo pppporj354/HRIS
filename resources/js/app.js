@@ -3,22 +3,7 @@ import "./bootstrap";
 
 //import popper
 import * as Popper from "@popperjs/core";
-window.P; // Initialize employee dashboard if on dashboard page
-if (document.querySelector(".employee-widget-card")) {
-    import("./employee-dashboard.js").catch((error) => {
-        console.error("Error loading employee dashboard:", error);
-    });
-}
-
-// Initialize notification system if notification elements exist
-if (
-    document.querySelector(".notification-bell") ||
-    document.querySelector("#notificationDropdown")
-) {
-    import("./notification-system.js").catch((error) => {
-        console.error("Error loading notification system:", error);
-    });
-}
+window.Popper = Popper;
 
 // import datatables component
 import "datatables.net-bs5";
@@ -139,27 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.classList.remove("touching");
                 }, 150);
             });
-        });
-    }
-
-    // Initialize dashboard charts if on dashboard page
-    if (document.querySelector(".dashboard-charts")) {
-        import("./dashboard-charts.js").catch((error) => {
-            console.error("Error loading dashboard charts:", error);
-        });
-    }
-
-    // Initialize quick actions if on dashboard page
-    if (document.querySelector(".quick-action-card")) {
-        import("./quick-actions.js").catch((error) => {
-            console.error("Error loading quick actions:", error);
-        });
-    }
-
-    // Initialize employee dashboard if on dashboard page
-    if (document.querySelector(".employee-widget-card")) {
-        import("./employee-dashboard.js").catch((error) => {
-            console.error("Error loading employee dashboard:", error);
         });
     }
 });
