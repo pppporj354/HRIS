@@ -186,21 +186,20 @@
                                             // Get recent activities based on user role
                                             $activities = [];
 
-                                            if (Auth::user()->hasRole('Administrator')) {
-                                                // Admin activities
+                                            try {
+                                                if (Auth::user()->hasRole('Administrator')) {
+                                                    // Admin activities
 
-                                                // Get latest cuti requests
-                                                $latestCuti = DB::table('cuti')
-                                                    ->join('users', 'cuti.user_id', '=', 'users.id')
-                                                    ->select('cuti.*', 'users.name')
-                                                    ->orderBy('created_at', 'desc')
-                                                    ->limit(2)
-                                                    ->get();
-
-                                                foreach ($latestCuti as $cuti) {
+                                                    // Get latest cuti requests
+                                                    $latestCuti = DB::table('cuti')
+                                                        ->join('data_karyawan', 'cuti.user_id', '=', 'data_karyawan.user_id')
+                                                        ->select('cuti.*', 'data_karyawan.nama')
+                                                        ->orderBy('cuti.created_at', 'desc')
+                                                        ->limit(2)
+                                                        ->get();                                                foreach ($latestCuti as $cuti) {
                                                     $activities[] = [
                                                         'icon' => 'bi-calendar-plus',
-                                                        'title' => 'Pengajuan cuti dari ' . $cuti->name,
+                                                        'title' => 'Pengajuan cuti dari ' . $cuti->nama,
                                                         'time' => \Carbon\Carbon::parse($cuti->created_at)->diffForHumans(),
                                                         'status' => 'primary'
                                                     ];
@@ -226,13 +225,12 @@
                                                 $userId = Auth::id();
 
                                                 // Get employee's latest leave requests
-                                                $myLatestCuti = DB::table('cuti')
-                                                    ->where('user_id', $userId)
-                                                    ->orderBy('created_at', 'desc')
-                                                    ->limit(2)
-                                                    ->get();
-
-                                                foreach ($myLatestCuti as $cuti) {
+                                                try {
+                                                    $myLatestCuti = DB::table('cuti')
+                                                        ->where('user_id', $userId)
+                                                        ->orderBy('created_at', 'desc')
+                                                        ->limit(2)
+                                                        ->get();                                                foreach ($myLatestCuti as $cuti) {
                                                     $statusIcon = 'bi-hourglass';
                                                     $statusClass = 'warning';
 
@@ -267,15 +265,33 @@
                                                         'status' => 'info'
                                                     ];
                                                 }
-                                            }
-
-                                            // If no activities found, add a placeholder
+                                                } catch (\Exception $e) {
+                                                    // Log error but don't crash the page
+                                                    $activities[] = [
+                                                        'icon' => 'bi-exclamation-triangle',
+                                                        'title' => 'Terjadi kesalahan saat memuat aktivitas',
+                                                        'time' => 'Silakan refresh halaman',
+                                                        'status' => 'warning'
+                                                    ];
+                                                }
+                                            }                                            // If no activities found, add a placeholder
                                             if (empty($activities)) {
                                                 $activities[] = [
                                                     'icon' => 'bi-info-circle',
                                                     'title' => 'Belum ada aktivitas terbaru',
                                                     'time' => 'Saat ini',
                                                     'status' => 'secondary'
+                                                ];
+                                            }
+
+                                            } catch (\Exception $e) {
+                                                // Log error but don't crash the page
+                                                // Add fallback activity item
+                                                $activities[] = [
+                                                    'icon' => 'bi-exclamation-triangle',
+                                                    'title' => 'Terjadi kesalahan saat memuat aktivitas',
+                                                    'time' => 'Silakan refresh halaman',
+                                                    'status' => 'warning'
                                                 ];
                                             }
                                         @endphp
