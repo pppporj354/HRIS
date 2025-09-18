@@ -14,6 +14,42 @@ import.meta.glob(["../assets/**"]);
 
 // Dashboard interactions
 document.addEventListener("DOMContentLoaded", function () {
+    // Mobile sidebar functionality
+    const sidebarToggle = document.getElementById("sidebar-toggle");
+    const sidebar = document.querySelector(".sidebar");
+
+    if (sidebarToggle && sidebar) {
+        // Create overlay for mobile
+        const overlay = document.createElement("div");
+        overlay.className = "sidebar-overlay";
+        document.body.appendChild(overlay);
+
+        sidebarToggle.addEventListener("click", function () {
+            sidebar.classList.toggle("show");
+            overlay.classList.toggle("show");
+            document.body.classList.toggle("sidebar-open");
+        });
+
+        // Close sidebar when clicking overlay
+        overlay.addEventListener("click", function () {
+            sidebar.classList.remove("show");
+            overlay.classList.remove("show");
+            document.body.classList.remove("sidebar-open");
+        });
+
+        // Close sidebar when clicking navigation links on mobile
+        if (window.innerWidth <= 767) {
+            const navLinks = sidebar.querySelectorAll(".nav-link");
+            navLinks.forEach((link) => {
+                link.addEventListener("click", function () {
+                    sidebar.classList.remove("show");
+                    overlay.classList.remove("show");
+                    document.body.classList.remove("sidebar-open");
+                });
+            });
+        }
+    }
+
     // Add hover effect to activity feed items
     const activityItems = document.querySelectorAll(".activity-feed-item");
     if (activityItems) {
@@ -36,6 +72,28 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         tooltips.forEach((tooltip) => {
             new bootstrap.Tooltip(tooltip);
+        });
+    }
+
+    // Touch-friendly enhancements for mobile devices
+    if ("ontouchstart" in window) {
+        // Add touch class to body for CSS targeting
+        document.body.classList.add("touch-device");
+
+        // Improve button tap targets
+        const buttons = document.querySelectorAll(
+            ".btn, .nav-link, .dropdown-item"
+        );
+        buttons.forEach((button) => {
+            button.addEventListener("touchstart", function () {
+                this.classList.add("touching");
+            });
+
+            button.addEventListener("touchend", function () {
+                setTimeout(() => {
+                    this.classList.remove("touching");
+                }, 150);
+            });
         });
     }
 });

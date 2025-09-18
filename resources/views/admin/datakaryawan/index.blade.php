@@ -111,114 +111,106 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="form-group mt-1">
-                            <label for="nomorTelepon" class="form-label">Nomor Telepon</label>
-                            <input class="form-control @error('nomorTelepon') is-invalid @enderror" type="tel"
-                                name="nomorTelepon" id="nomorTeleponCreate" value="{{ old('nomorTelepon') }}"
-                                placeholder="Masukkan nomor telepon karyawan">
-                            @error('nomorTelepon')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group my-2">
-                            <label for="statusKaryawan" class="form-label">Status Karyawan</label>
-                            <select class="d-block" name="statusKaryawan" id="statusKaryawanCreate">
-                                <option value="Karyawan Tetap">Karyawan Tetap</option>
-                                <option value="Karyawan Kontrak">Karyawan Kontrak</option>
-                            </select>
-                            @error('statusKaryawan')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mt-1">
-                            <label for="keahlian" class="form-label">Keahlian</label>
-                            <input class="form-control @error('keahlian') is-invalid @enderror" type="text"
-                                name="keahlian" id="keahlianCreate" value="{{ old('keahlian') }}"
-                                placeholder="Masukkan keahlian yang dimiliki karyawan">
-                            @error('keahlian')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mt-1">
-                            <label for="jabatan" class="form-label">Jabatan</label>
-                            <input class="form-control @error('jabatan') is-invalid @enderror" type="text"
-                                name="jabatan" id="jabatanCreate" value="{{ old('jabatan') }}"
-                                placeholder="Masukkan jabatan">
-                            @error('jabatan')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <h4 class="text-center mt-3">Data Akun</h4>
-                        <div class="form-group">
-                            <label for="username" class="form-label">Username</label>
-                            <input class="form-control @error('username') is-invalid @enderror" type="text"
-                                name="username" id="usernameCreate" value="{{ old('username') }}"
-                                placeholder="Masukkan username">
-                            @error('username')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mt-1">
-                            <label for="email" class="form-label">Email</label>
-                            <input class="form-control @error('email') is-invalid @enderror" type="text"
-                                name="email" id="emailCreate" value="{{ old('email') }}"
-                                placeholder="Masukkan email">
-                            @error('email')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mt-1">
-                            <label for="password" class="form-label">Password baru</label>
-                            <input class="form-control @error('password') is-invalid @enderror" type="password"
-                                name="password" id="passwordCreate" value="" placeholder="Masukkan password"
-                                autocomplete>
-                            @error('password')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group mt-1">
-                            <label for="password_confirmation" class="form-label">Konfirmasi password baru</label>
-                            <input class="form-control @error('password_confirmation') is-invalid @enderror"
-                                type="password" name="password_confirmation" id="password_confirmationCreate"
-                                value="" placeholder="Masukkan password ulang" autocomplete>
-                            @error('password_confirmation')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group my-2">
-                            <label for="role" class="form-label">Role</label>
-                            <select class="d-block" name="role" id="roleCreate">
-                                <option value="Administrator">Administrator</option>
-                                <option value="Employee">Karyawan Reguler</option>
-                            </select>
-                            @error('role')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <p class="fw-bold">Note : Pastikan username karyawan yang dimasukkan merupakan username yang unik
+                            <x-form-input
+                                label="Nomor Telepon"
+                                name="nomorTelepon"
+                                type="tel"
+                                icon="telephone"
+                                placeholder="Masukkan nomor telepon"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-select
+                                label="Status Karyawan"
+                                name="statusKaryawan"
+                                icon="briefcase"
+                                :options="['Karyawan Tetap' => 'Karyawan Tetap', 'Karyawan Kontrak' => 'Karyawan Kontrak']"
+                                placeholder="Pilih status karyawan"
+                                :errors="$errors"
+                                required
+                            />
+                            <x-form-input
+                                label="Keahlian"
+                                name="keahlian"
+                                icon="tools"
+                                placeholder="Masukkan keahlian yang dimiliki"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-input
+                                label="Jabatan"
+                                name="jabatan"
+                                icon="person-badge"
+                                placeholder="Masukkan jabatan"
+                                :errors="$errors"
+                                required
+                            />
+                        </x-form-section>
+
+                        <x-form-section title="Data Akun" icon="person-check" color="secondary">
+                            <x-form-input
+                                label="Username"
+                                name="username"
+                                icon="person"
+                                placeholder="Masukkan username"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-input
+                                label="Email"
+                                name="email"
+                                type="email"
+                                icon="envelope"
+                                placeholder="Masukkan alamat email"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-input
+                                label="Password"
+                                name="password"
+                                type="password"
+                                icon="lock"
+                                placeholder="Masukkan password"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-input
+                                label="Konfirmasi Password"
+                                name="password_confirmation"
+                                type="password"
+                                icon="lock-fill"
+                                placeholder="Masukkan ulang password"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-select
+                                label="Role Pengguna"
+                                name="role"
+                                icon="shield-check"
+                                :options="['Administrator' => 'Administrator', 'Employee' => 'Karyawan']"
+                                placeholder="Pilih role pengguna"
+                                :errors="$errors"
+                                required
+                            />
+                        </x-form-section>
+                        <div class="alert alert-info d-flex align-items-start mb-0">
+                            <i class="bi bi-info-circle me-2 mt-1 flex-shrink-0"></i>
+                            <small><strong>Catatan:</strong> Pastikan username karyawan yang dimasukkan merupakan username yang unik
                             dan pastikan sudah benar karena tidak dapat diganti setelah data karyawan beserta akun telah
-                            berhasil dibuat.</p>
+                            berhasil dibuat.</small>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Simpan Data</button>
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 ms-2">
+                            <i class="bi bi-save me-1"></i>Simpan Data
+                        </button>
                     </div>
                 </form>
             </div>

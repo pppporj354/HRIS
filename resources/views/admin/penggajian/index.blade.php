@@ -40,38 +40,42 @@
 
     <!-- Start Modal Tanggal Export PDF -->
     <div class="modal fade" id="tanggalPDFModal" tabindex="-1" aria-labelledby="tanggalPDFModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tanggalPDFModalLabel">Pilih Bulan</h5>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="tanggalPDFModalLabel">
+                        <i class="bi bi-file-pdf text-danger me-2"></i>Export PDF - Pilih Periode
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('penggajian.exportPDF') }}" method="POST" id="exportPDFForm">
                     @csrf
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="bulanMulaiPDF">Mulai</label>
-                            <input type="month" class="form-control @error('bulanMulaiPDF') is-invalid @enderror"
-                                id="bulanMulaiPDF" name="bulanMulaiPDF" value="{{ old('bulanMulaiPDF') }}">
-                            @error('bulanMulaiPDF')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="bulanSampaiPDF">Sampai</label>
-                            <input type="month" class="form-control @error('bulanSampaiPDF') is-invalid @enderror"
-                                id="bulanSampaiPDF" name="bulanSampaiPDF" value="{{ old('bulanSampaiPDF') }}">
-                            @error('bulanSampaiPDF')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
+                    <div class="modal-body pt-0">
+                        <x-form-section title="Periode Export" icon="calendar-range" color="danger">
+                            <x-form-input
+                                label="Tanggal Mulai"
+                                name="bulanMulaiPDF"
+                                type="month"
+                                icon="calendar-event"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-input
+                                label="Tanggal Sampai"
+                                name="bulanSampaiPDF"
+                                type="month"
+                                icon="calendar-check"
+                                :errors="$errors"
+                                required
+                            />
+                        </x-form-section>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger" id="exportPDFButton">Export</button>
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger rounded-pill px-4 ms-2" id="exportPDFButton">
+                            <i class="bi bi-download me-1"></i>Export PDF
+                        </button>
                     </div>
                 </form>
             </div>
@@ -82,38 +86,42 @@
     <!-- Start Modal Tanggal Export Excel -->
     <div class="modal fade" id="tanggalExcelModal" tabindex="-1" aria-labelledby="tanggalExcelModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tanggalExcelModalLabel">Pilih Bulan</h5>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="tanggalExcelModalLabel">
+                        <i class="bi bi-file-excel text-success me-2"></i>Export Excel - Pilih Periode
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('penggajian.exportExcel') }}" method="POST" id="exportExcelForm">
                     @csrf
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="bulanMulaiExcel">Mulai</label>
-                            <input type="month" class="form-control @error('bulanMulaiExcel') is-invalid @enderror"
-                                id="bulanMulaiExcel" name="bulanMulaiExcel">
-                            @error('bulanMulaiExcel')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="bulanSampaiExcel">Sampai</label>
-                            <input type="month" class="form-control @error('bulanSampaiExcel') is-invalid @enderror"
-                                id="bulanSampaiExcel" name="bulanSampaiExcel">
-                            @error('bulanSampaiExcel')
-                                <div class="text-danger">
-                                    <small>{{ $message }}</small>
-                                </div>
-                            @enderror
-                        </div>
+                    <div class="modal-body pt-0">
+                        <x-form-section title="Periode Export" icon="calendar-range" color="success">
+                            <x-form-input
+                                label="Tanggal Mulai"
+                                name="bulanMulaiExcel"
+                                type="month"
+                                icon="calendar-event"
+                                :errors="$errors"
+                                required
+                            />
+
+                            <x-form-input
+                                label="Tanggal Sampai"
+                                name="bulanSampaiExcel"
+                                type="month"
+                                icon="calendar-check"
+                                :errors="$errors"
+                                required
+                            />
+                        </x-form-section>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" id="exportExcelButton">Export</button>
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success rounded-pill px-4 ms-2" id="exportExcelButton">
+                            <i class="bi bi-download me-1"></i>Export Excel
+                        </button>
                     </div>
                 </form>
             </div>
