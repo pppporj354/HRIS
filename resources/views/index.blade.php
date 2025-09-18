@@ -358,7 +358,7 @@
                                                     <p class="text-muted small mb-0">Tahun {{ date('Y') }}</p>
                                                 </div>
                                             </div>
-                                            
+
                                             @if(isset($employeeAnalytics['leaveBalance']))
                                                 @php
                                                     $leaveBalance = $employeeAnalytics['leaveBalance'];
@@ -366,19 +366,19 @@
                                                     $usedLeave = $leaveBalance['approved'];
                                                     $remainingLeave = $annualLeave - $usedLeave;
                                                 @endphp
-                                                
+
                                                 <div class="leave-progress mt-3">
                                                     <div class="d-flex justify-content-between mb-2">
                                                         <span class="small text-muted">Tersisa</span>
                                                         <span class="small font-weight-bold">{{ $remainingLeave }}/{{ $annualLeave }} hari</span>
                                                     </div>
                                                     <div class="progress" style="height: 8px;">
-                                                        <div class="progress-bar bg-primary" role="progressbar" 
+                                                        <div class="progress-bar bg-primary" role="progressbar"
                                                              style="width: {{ ($remainingLeave / $annualLeave) * 100 }}%">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="leave-stats mt-3">
                                                     <div class="row text-center">
                                                         <div class="col-4">
@@ -436,7 +436,7 @@
                                                     $myRate = $employeeAnalytics['performanceComparison']['my_attendance_rate'];
                                                     $avgRate = $employeeAnalytics['performanceComparison']['company_avg_attendance'];
                                                 @endphp
-                                                
+
                                                 <div class="attendance-summary mt-3">
                                                     <div class="text-center mb-3">
                                                         <div class="attendance-circle">
@@ -448,7 +448,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="comparison-stats">
                                                         <div class="d-flex justify-content-between mb-2">
                                                             <span class="text-muted small">Saya</span>
@@ -684,7 +684,7 @@
                                     <h5 class="dashboard-section-title mb-0">Analitik Dashboard</h5>
                                     <p class="text-muted small mb-0">Grafik dan visualisasi data karyawan</p>
                                 </div>
-                                
+
                                 <!-- First row of charts -->
                                 <div class="col-lg-6 mb-4">
                                     <div class="dashboard-card">
@@ -695,7 +695,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-6 mb-4">
                                     <div class="dashboard-card">
                                         <div class="card-body">
@@ -716,7 +716,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-6 mb-4">
                                     <div class="dashboard-card">
                                         <div class="card-body">
@@ -737,7 +737,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-6 mb-4">
                                     <div class="dashboard-card">
                                         <div class="card-body">
@@ -756,7 +756,7 @@
                                     <h5 class="dashboard-section-title mb-0">Analitik Personal</h5>
                                     <p class="text-muted small mb-0">Grafik data pribadi Anda</p>
                                 </div>
-                                
+
                                 <!-- Employee personal charts -->
                                 <div class="col-lg-6 mb-4">
                                     <div class="dashboard-card">
@@ -768,7 +768,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-6 mb-4">
                                     <div class="dashboard-card">
                                         <div class="card-body">

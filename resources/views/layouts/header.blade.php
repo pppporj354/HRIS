@@ -29,7 +29,7 @@
         <div class="nav-item text-nowrap d-flex align-items-center">
             <!-- Enhanced notifications dropdown -->
             <div class="dropdown me-3 d-none d-md-block">
-                <a href="#" class="btn btn-sm btn-outline-light border-0 position-relative" id="notificationDropdown" 
+                <a href="#" class="btn btn-sm btn-outline-light border-0 position-relative" id="notificationDropdown"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-bell"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-notifikasi d-none">
@@ -37,7 +37,7 @@
                         <span class="visually-hidden">unread messages</span>
                     </span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end shadow border-0 notification-dropdown" 
+                <div class="dropdown-menu dropdown-menu-end shadow border-0 notification-dropdown"
                      aria-labelledby="notificationDropdown" style="width: 350px; max-width: 90vw;">
                     <!-- Notification Header -->
                     <div class="dropdown-header d-flex justify-content-between align-items-center px-3 py-2">
@@ -46,7 +46,7 @@
                             <small>Tandai semua dibaca</small>
                         </button>
                     </div>
-                    
+
                     <!-- Notification List -->
                     <div class="notification-list" id="notificationList" style="max-height: 300px; overflow-y: auto;">
                         <div class="text-center py-4">
@@ -56,7 +56,7 @@
                             <p class="small text-muted mt-2 mb-0">Memuat notifikasi...</p>
                         </div>
                     </div>
-                    
+
                     <!-- Notification Footer -->
                     <div class="dropdown-footer border-top">
                         <a class="dropdown-item text-center py-2 small" href="{{ route('notifikasi.index') }}">

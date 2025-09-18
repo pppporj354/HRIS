@@ -3,7 +3,22 @@ import "./bootstrap";
 
 //import popper
 import * as Popper from "@popperjs/core";
-window.Popper = Popper;
+window.P; // Initialize employee dashboard if on dashboard page
+if (document.querySelector(".employee-widget-card")) {
+    import("./employee-dashboard.js").catch((error) => {
+        console.error("Error loading employee dashboard:", error);
+    });
+}
+
+// Initialize notification system if notification elements exist
+if (
+    document.querySelector(".notification-bell") ||
+    document.querySelector("#notificationDropdown")
+) {
+    import("./notification-system.js").catch((error) => {
+        console.error("Error loading notification system:", error);
+    });
+}
 
 // import datatables component
 import "datatables.net-bs5";
@@ -21,7 +36,7 @@ import {
     Title,
     Tooltip,
     Legend,
-} from 'chart.js';
+} from "chart.js";
 
 // Register Chart.js components
 Chart.register(
@@ -128,23 +143,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Initialize dashboard charts if on dashboard page
-    if (document.querySelector('.dashboard-charts')) {
-        import('./dashboard-charts.js').catch(error => {
-            console.error('Error loading dashboard charts:', error);
+    if (document.querySelector(".dashboard-charts")) {
+        import("./dashboard-charts.js").catch((error) => {
+            console.error("Error loading dashboard charts:", error);
         });
     }
 
     // Initialize quick actions if on dashboard page
-    if (document.querySelector('.quick-action-card')) {
-        import('./quick-actions.js').catch(error => {
-            console.error('Error loading quick actions:', error);
+    if (document.querySelector(".quick-action-card")) {
+        import("./quick-actions.js").catch((error) => {
+            console.error("Error loading quick actions:", error);
         });
     }
 
     // Initialize employee dashboard if on dashboard page
-    if (document.querySelector('.employee-widget-card')) {
-        import('./employee-dashboard.js').catch(error => {
-            console.error('Error loading employee dashboard:', error);
+    if (document.querySelector(".employee-widget-card")) {
+        import("./employee-dashboard.js").catch((error) => {
+            console.error("Error loading employee dashboard:", error);
         });
     }
 });

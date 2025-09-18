@@ -102,12 +102,12 @@ Route::middleware(['auth', 'no.cache'])->group(function () {
     // route profile
      Route::get('/profil/sunting', [ProfileController::class, 'sunting'])->name('profil.sunting');
     Route::resource('profil', ProfileController::class);
-   
+
     // route panduan penggunaan aplikasi
     Route::get('panduan', [AllController::class, 'panduan'])->name('panduan');
     // route untuk menampilkan dashboard dan juga get data untuk halaman dashboard yaitu absensi hari ini
     Route::get('dashboard', [AllController::class, 'dashboard'])->name('dashboard');
-    
+
     // Dashboard API routes for charts and analytics
     Route::prefix('api/dashboard')->group(function () {
         Route::get('attendance-trends', [AllController::class, 'getAttendanceTrends'])->name('api.dashboard.attendance-trends');
@@ -118,16 +118,16 @@ Route::middleware(['auth', 'no.cache'])->group(function () {
         Route::get('employee-performance', [AllController::class, 'getEmployeePerformance'])->name('api.dashboard.employee-performance');
         Route::get('recent-activities', [AllController::class, 'getRecentActivitiesApi'])->name('api.dashboard.recent-activities');
         Route::get('pending-approvals', [AllController::class, 'getPendingApprovals'])->name('api.dashboard.pending-approvals');
-        
+
         // Employee personal dashboard APIs
         Route::get('personal-attendance', [AllController::class, 'getPersonalAttendance'])->name('api.dashboard.personal-attendance');
         Route::get('personal-leave', [AllController::class, 'getPersonalLeave'])->name('api.dashboard.personal-leave');
     });
-    
+
     // route untuk notifikasi
     Route::resource('notifikasi', NotifikasiController::class);
     Route::get('/getNotifikasiCount', [NotifikasiController::class, 'count']);
-    
+
     // Enhanced notification routes
     Route::prefix('api/notifications')->group(function () {
         Route::get('recent', [NotifikasiController::class, 'getRecentNotifications'])->name('api.notifications.recent');

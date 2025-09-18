@@ -15,18 +15,20 @@ export class NotificationSystem {
 
     bindEventHandlers() {
         // Mark all as read button
-        const markAllReadBtn = document.getElementById('markAllReadBtn');
+        const markAllReadBtn = document.getElementById("markAllReadBtn");
         if (markAllReadBtn) {
-            markAllReadBtn.addEventListener('click', (e) => {
+            markAllReadBtn.addEventListener("click", (e) => {
                 e.preventDefault();
                 this.markAllAsRead();
             });
         }
 
         // Refresh notifications when dropdown is opened
-        const notificationDropdown = document.getElementById('notificationDropdown');
+        const notificationDropdown = document.getElementById(
+            "notificationDropdown"
+        );
         if (notificationDropdown) {
-            notificationDropdown.addEventListener('shown.bs.dropdown', () => {
+            notificationDropdown.addEventListener("shown.bs.dropdown", () => {
                 this.loadRecentNotifications();
             });
         }
@@ -34,45 +36,44 @@ export class NotificationSystem {
 
     async updateNotificationCount() {
         try {
-            const response = await fetch('/getNotifikasiCount');
+            const response = await fetch("/getNotifikasiCount");
             const data = await response.json();
-            
-            const badges = document.querySelectorAll('.badge-notifikasi');
-            const counts = document.querySelectorAll('.notification-count');
-            const indicators = document.querySelectorAll('.penanda-notifikasi');
-            
+
+            const badges = document.querySelectorAll(".badge-notifikasi");
+            const counts = document.querySelectorAll(".notification-count");
+            const indicators = document.querySelectorAll(".penanda-notifikasi");
+
             if (data.count > 0) {
-                badges.forEach(badge => {
-                    badge.classList.remove('d-none');
+                badges.forEach((badge) => {
+                    badge.classList.remove("d-none");
                 });
-                counts.forEach(count => {
-                    count.textContent = data.count > 99 ? '99+' : data.count;
+                counts.forEach((count) => {
+                    count.textContent = data.count > 99 ? "99+" : data.count;
                 });
-                indicators.forEach(indicator => {
-                    indicator.classList.remove('d-none');
+                indicators.forEach((indicator) => {
+                    indicator.classList.remove("d-none");
                 });
             } else {
-                badges.forEach(badge => {
-                    badge.classList.add('d-none');
+                badges.forEach((badge) => {
+                    badge.classList.add("d-none");
                 });
-                indicators.forEach(indicator => {
-                    indicator.classList.add('d-none');
+                indicators.forEach((indicator) => {
+                    indicator.classList.add("d-none");
                 });
             }
-            
         } catch (error) {
-            console.error('Error updating notification count:', error);
+            console.error("Error updating notification count:", error);
         }
     }
 
     async loadRecentNotifications() {
-        const listContainer = document.getElementById('notificationList');
+        const listContainer = document.getElementById("notificationList");
         if (!listContainer) return;
 
         try {
-            const response = await fetch('/api/notifications/recent');
+            const response = await fetch("/api/notifications/recent");
             const data = await response.json();
-            
+
             if (data.success) {
                 this.renderNotifications(data.data);
                 this.updateNotificationBadge(data.unread_count);
@@ -80,14 +81,14 @@ export class NotificationSystem {
                 this.showNotificationError();
             }
         } catch (error) {
-            console.error('Error loading recent notifications:', error);
+            console.error("Error loading recent notifications:", error);
             this.showNotificationError();
         }
     }
 
     renderNotifications(notifications) {
-        const listContainer = document.getElementById('notificationList');
-        
+        const listContainer = document.getElementById("notificationList");
+
         if (notifications.length === 0) {
             listContainer.innerHTML = `
                 <div class="text-center py-4">
@@ -98,40 +99,52 @@ export class NotificationSystem {
             return;
         }
 
-        const notificationItems = notifications.map(notification => {
-            const isUnread = !notification.is_read;
-            const timeAgo = notification.time;
-            
-            return `
-                <div class="notification-item ${isUnread ? 'unread' : ''}" data-id="${notification.id}">
+        const notificationItems = notifications
+            .map((notification) => {
+                const isUnread = !notification.is_read;
+                const timeAgo = notification.time;
+
+                return `
+                <div class="notification-item ${
+                    isUnread ? "unread" : ""
+                }" data-id="${notification.id}">
                     <div class="d-flex align-items-start p-3 border-bottom">
-                        <div class="notification-indicator ${isUnread ? 'active' : ''}"></div>
+                        <div class="notification-indicator ${
+                            isUnread ? "active" : ""
+                        }"></div>
                         <div class="notification-content flex-grow-1">
-                            <p class="notification-message mb-1">${notification.message}</p>
+                            <p class="notification-message mb-1">${
+                                notification.message
+                            }</p>
                             <small class="notification-time text-muted">${timeAgo}</small>
                         </div>
-                        ${isUnread ? `
+                        ${
+                            isUnread
+                                ? `
                             <button class="btn btn-sm btn-link p-1 mark-read-btn" data-id="${notification.id}" title="Tandai dibaca">
                                 <i class="bi bi-check2"></i>
                             </button>
-                        ` : ''}
+                        `
+                                : ""
+                        }
                     </div>
                 </div>
             `;
-        }).join('');
+            })
+            .join("");
 
         listContainer.innerHTML = notificationItems;
-        
+
         // Bind click handlers for mark as read buttons
         this.bindMarkAsReadHandlers();
     }
 
     bindMarkAsReadHandlers() {
-        const markReadBtns = document.querySelectorAll('.mark-read-btn');
-        markReadBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
+        const markReadBtns = document.querySelectorAll(".mark-read-btn");
+        markReadBtns.forEach((btn) => {
+            btn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                const notificationId = btn.getAttribute('data-id');
+                const notificationId = btn.getAttribute("data-id");
                 this.markAsRead(notificationId);
             });
         });
@@ -139,81 +152,102 @@ export class NotificationSystem {
 
     async markAsRead(notificationId) {
         try {
-            const response = await fetch(`/api/notifications/${notificationId}/mark-read`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            const response = await fetch(
+                `/api/notifications/${notificationId}/mark-read`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN":
+                            document
+                                .querySelector('meta[name="csrf-token"]')
+                                ?.getAttribute("content") || "",
+                    },
                 }
-            });
+            );
 
             const data = await response.json();
-            
+
             if (data.success) {
                 // Update the notification item visually
-                const notificationItem = document.querySelector(`[data-id="${notificationId}"]`);
+                const notificationItem = document.querySelector(
+                    `[data-id="${notificationId}"]`
+                );
                 if (notificationItem) {
-                    notificationItem.classList.remove('unread');
-                    const indicator = notificationItem.querySelector('.notification-indicator');
-                    const markBtn = notificationItem.querySelector('.mark-read-btn');
-                    
-                    if (indicator) indicator.classList.remove('active');
+                    notificationItem.classList.remove("unread");
+                    const indicator = notificationItem.querySelector(
+                        ".notification-indicator"
+                    );
+                    const markBtn =
+                        notificationItem.querySelector(".mark-read-btn");
+
+                    if (indicator) indicator.classList.remove("active");
                     if (markBtn) markBtn.remove();
                 }
-                
+
                 // Update notification count
                 this.updateNotificationCount();
             }
         } catch (error) {
-            console.error('Error marking notification as read:', error);
+            console.error("Error marking notification as read:", error);
         }
     }
 
     async markAllAsRead() {
         try {
-            const response = await fetch('/api/notifications/mark-all-read', {
-                method: 'POST',
+            const response = await fetch("/api/notifications/mark-all-read", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-                }
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN":
+                        document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute("content") || "",
+                },
             });
 
             const data = await response.json();
-            
+
             if (data.success) {
                 // Reload notifications
                 this.loadRecentNotifications();
                 this.updateNotificationCount();
-                
+
                 // Show success message
-                this.showToast('success', 'Semua notifikasi telah ditandai sebagai dibaca');
+                this.showToast(
+                    "success",
+                    "Semua notifikasi telah ditandai sebagai dibaca"
+                );
             }
         } catch (error) {
-            console.error('Error marking all notifications as read:', error);
-            this.showToast('danger', 'Gagal menandai semua notifikasi');
+            console.error("Error marking all notifications as read:", error);
+            this.showToast("danger", "Gagal menandai semua notifikasi");
         }
     }
 
     updateNotificationBadge(unreadCount) {
-        const badges = document.querySelectorAll('.badge-notifikasi');
-        const counts = document.querySelectorAll('.notification-count');
-        const indicators = document.querySelectorAll('.penanda-notifikasi');
-        
+        const badges = document.querySelectorAll(".badge-notifikasi");
+        const counts = document.querySelectorAll(".notification-count");
+        const indicators = document.querySelectorAll(".penanda-notifikasi");
+
         if (unreadCount > 0) {
-            badges.forEach(badge => badge.classList.remove('d-none'));
-            counts.forEach(count => {
-                count.textContent = unreadCount > 99 ? '99+' : unreadCount;
+            badges.forEach((badge) => badge.classList.remove("d-none"));
+            counts.forEach((count) => {
+                count.textContent = unreadCount > 99 ? "99+" : unreadCount;
             });
-            indicators.forEach(indicator => indicator.classList.remove('d-none'));
+            indicators.forEach((indicator) =>
+                indicator.classList.remove("d-none")
+            );
         } else {
-            badges.forEach(badge => badge.classList.add('d-none'));
-            indicators.forEach(indicator => indicator.classList.add('d-none'));
+            badges.forEach((badge) => badge.classList.add("d-none"));
+            indicators.forEach((indicator) =>
+                indicator.classList.add("d-none")
+            );
         }
     }
 
     showNotificationError() {
-        const listContainer = document.getElementById('notificationList');
+        const listContainer = document.getElementById("notificationList");
         if (listContainer) {
             listContainer.innerHTML = `
                 <div class="text-center py-4">
@@ -231,10 +265,10 @@ export class NotificationSystem {
         // Refresh notifications every 30 seconds
         this.refreshInterval = setInterval(() => {
             this.updateNotificationCount();
-            
+
             // Only refresh the dropdown if it's open
-            const dropdown = document.getElementById('notificationDropdown');
-            if (dropdown && dropdown.getAttribute('aria-expanded') === 'true') {
+            const dropdown = document.getElementById("notificationDropdown");
+            if (dropdown && dropdown.getAttribute("aria-expanded") === "true") {
                 this.loadRecentNotifications();
             }
         }, 30000);
@@ -248,7 +282,7 @@ export class NotificationSystem {
     }
 
     showToast(type, message) {
-        const toast = document.createElement('div');
+        const toast = document.createElement("div");
         toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
         toast.style.cssText = `
             top: 20px;
@@ -259,24 +293,24 @@ export class NotificationSystem {
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
         `;
-        
+
         const iconMap = {
-            'success': 'check-circle',
-            'danger': 'exclamation-triangle',
-            'warning': 'exclamation-circle',
-            'info': 'info-circle'
+            success: "check-circle",
+            danger: "exclamation-triangle",
+            warning: "exclamation-circle",
+            info: "info-circle",
         };
-        
+
         toast.innerHTML = `
             <div class="d-flex align-items-center">
-                <i class="bi bi-${iconMap[type] || 'info-circle'} me-2"></i>
+                <i class="bi bi-${iconMap[type] || "info-circle"} me-2"></i>
                 <div>${message}</div>
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
             </div>
         `;
-        
+
         document.body.appendChild(toast);
-        
+
         setTimeout(() => {
             if (toast.parentNode) {
                 toast.remove();
@@ -297,6 +331,6 @@ export class NotificationSystem {
 }
 
 // Initialize notification system when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
     window.notificationSystem = new NotificationSystem();
 });
